@@ -64,8 +64,8 @@ public class ExemploListener extends Listener {
 						}
 					}
 				}
-				System.out.println(novaMao);
-				System.out.println();
+//				System.out.println(novaMao);
+//				System.out.println();
 			}
 	}
 }
