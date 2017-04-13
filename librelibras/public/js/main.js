@@ -4,4 +4,6 @@ angular.module('librelibras', ['ngRoute', 'ngResource'])
             templateUrl: 'partials/sinal.html',
             controller: 'SinalController'
         });
+
+        $routeProvider.otherwise({redirectTo: '/sinal'});
     });
