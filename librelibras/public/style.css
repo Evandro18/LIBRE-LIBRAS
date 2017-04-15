@@ -1,32 +1,23 @@
 /*
  * style.css
  */
-.container, .container-fluid {
-    padding-right: 15px;
-    padding-left: 15px;
-    background-color: #f9f9f9;
-}
-.row {
-    margin-bottom: 15px;
+
+.container,
+.container-fluid {
+    margin: 5px;
 }
 
-.btn {
-    margin-top: 400px;
-    width: 250px;
-}
+.row {}
+
+.btn {}
 
 [class*="col-"] {
-    padding-top: 15px;
-    padding-bottom: 15px;
     background-color: #fff;
-    background-color: rgba(251,251,251,.0);
-    border: 1px solid #ddd;
-    border: 1px solid rgba(86,61,124,.2);
-    border-left: none;
+    background-color: rgba(251, 251, 251, .0);
     text-align: center;
-    height: 500px;
+    height: 100%;
 }
 
 .form-group {
-    height: 455px;
+    height: 80%;
 }

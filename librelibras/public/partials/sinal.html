@@ -1,22 +1,41 @@
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col-md-8">
-            Visualizador
-            <br>
-            <button ng-click="salvar()" class="btn" type="button" name="button">SALVAR</button>
+            <div class="card">
+                <div class="card-block">
+                    <div class="card-title">Visualizador</div>
+                    <br>
+                    <button ng-click="salvar()" class="btn btn-primary" data-ripple-color="#F0F0F0" type="button" name="button">CAPTURAR</button>
+                </div>
+            </div>
         </div>
-
-        <div class="col-md-4">
-            <p>Mãos</p>
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <p>Mão direita </p>
-                    <p ng-show="mensagem.text"> ID: {{mensagem.text}}
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-header default-color-dark white-text">
+                    Mão direita
+                </div>
+                <div class="card-block">
+                    <p class="card-text" ng-show="maoDireita.type">
+                        Tipo mão: {{maoDireita.type}}
+                    </p>
+                    <p class="card-text" ng-show="maoDireita.direction">
+                        Direção: {{maoDireita.direction}}
                     </p>
                 </div>
-
-                <div class="col-md-6 form-group">
-                    <p>Mão esquerda </p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="card text-center">
+                <div class="card-header default-color-dark white-text">
+                    Mão esquerda
+                </div>
+                <div class="card-block">
+                    <p class="card-text" ng-show="maoEsquerda.type">
+                        Tipo mão: {{maoEsquerda.type}}
+                    </p>
+                    <p class="card-text" ng-show="maoEsquerda.direction">
+                        Direção: {{maoEsquerda.direction}}
+                    </p>
                 </div>
             </div>
         </div>

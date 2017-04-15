@@ -1,21 +1,32 @@
 <!Doctype html>
 <html ng-app="librelibras">
-    <head>
-        <meta name="viewport" content="width=device-width">
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css" type="text/css" />
-        <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap-theme.css"/>
-        <link rel="stylesheet" href="style.css"/>
-    </head>
-    <body>
-        <div ng-view>
 
-        </div>
-		<script src="vendor/angular/angular.js"></script>
-		<script src="vendor/angular-route/angular-route.js"></script>
-        <script src="vendor/angular-resource/angular-resource.js"></script>
-        <script src="js/main.js"></script>
-        <script src="js/controllers/SinalController.js"></script>
-        <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
-    </body>
+<head>
+    <meta name="viewport" content="width=device-width">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css" type="text/css" />
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="vendor/MDBootstrap/css/mdb.min.css">
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Material Design fonts -->
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body class="container">
+    <div ng-view>
+
+    </div>
+    <script src="vendor/angular/angular.js"></script>
+    <script src="vendor/angular-route/angular-route.js"></script>
+    <script src="vendor/angular-resource/angular-resource.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/controllers/SinalController.js"></script>
+    <script src="http://js.leapmotion.com/leap-0.6.3.min.js"></script>
+</body>
+
 </html>
