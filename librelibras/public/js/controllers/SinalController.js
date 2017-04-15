@@ -43,7 +43,7 @@ angular.module('librelibras').controller('SinalController',
             }
         });
 
-        $scope.salvar = function() {
+        $scope.capturar = function() {
             $scope.mensagem = {
                 text: handID + ' certo'
             };
