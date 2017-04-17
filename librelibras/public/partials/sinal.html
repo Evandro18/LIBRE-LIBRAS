@@ -1,22 +1,39 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8">
-            Visualizador
+        <div class="card col s12 m8 l8 blue-gray darken-1 ">
+            <div class="card-title #00bfa5 teal accent-4 text-center ">Visualizador</div>
             <br>
-            <button ng-click="salvar()" class="btn" type="button" name="button">SALVAR</button>
+            <div class="card-content ">
+                <button ng-click="salvar() " class="btn waves-effect waves-ligh " type="button " name="button ">CAPTURAR</button>
+            </div>
         </div>
-
-        <div class="col-md-4">
-            <p>Mãos</p>
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <p>Mão direita </p>
-                    <p ng-show="mensagem.text"> ID: {{mensagem.text}}
+        <div class="col s12 m2 l2">
+            <div class="card text-center ">
+                <div class="card-title ">
+                    Mão direita
+                </div>
+                <div class="card-content ">
+                    <p class="card-text ">
+                        Tipo mão: {{maoDireita.type}}
+                    </p>
+                    <p class="card-text ">
+                        Direção: {{maoDireita.direction}}
                     </p>
                 </div>
-
-                <div class="col-md-6 form-group">
-                    <p>Mão esquerda </p>
+            </div>
+        </div>
+        <div class="col s12 m2 l2">
+            <div class="card text-center ">
+                <div class="card-title ">
+                    Mão esquerda
+                </div>
+                <div class="card-content ">
+                    <p class="card-text ">
+                        Tipo mão: {{maoEsquerda.type}}
+                    </p>
+                    <p class="card-text ">
+                        Direção: {{maoEsquerda.direction}}
+                    </p>
                 </div>
             </div>
         </div>
