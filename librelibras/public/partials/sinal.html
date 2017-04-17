@@ -1,39 +1,37 @@
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-block">
-                    <div class="card-title">Visualizador</div>
-                    <br>
-                    <button ng-click="salvar()" class="btn btn-primary" data-ripple-color="#F0F0F0" type="button" name="button">CAPTURAR</button>
-                </div>
+        <div class="card col s12 m8 l8 blue-gray darken-1 ">
+            <div class="card-title #00bfa5 teal accent-4 text-center ">Visualizador</div>
+            <br>
+            <div class="card-content ">
+                <button ng-click="salvar() " class="btn waves-effect waves-ligh " type="button " name="button ">CAPTURAR</button>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="card text-center">
-                <div class="card-header default-color-dark white-text">
+        <div class="col s12 m2 l2">
+            <div class="card text-center ">
+                <div class="card-title ">
                     Mão direita
                 </div>
-                <div class="card-block">
-                    <p class="card-text" ng-show="maoDireita.type">
+                <div class="card-content ">
+                    <p class="card-text ">
                         Tipo mão: {{maoDireita.type}}
                     </p>
-                    <p class="card-text" ng-show="maoDireita.direction">
+                    <p class="card-text ">
                         Direção: {{maoDireita.direction}}
                     </p>
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
-            <div class="card text-center">
-                <div class="card-header default-color-dark white-text">
+        <div class="col s12 m2 l2">
+            <div class="card text-center ">
+                <div class="card-title ">
                     Mão esquerda
                 </div>
-                <div class="card-block">
-                    <p class="card-text" ng-show="maoEsquerda.type">
+                <div class="card-content ">
+                    <p class="card-text ">
                         Tipo mão: {{maoEsquerda.type}}
                     </p>
-                    <p class="card-text" ng-show="maoEsquerda.direction">
+                    <p class="card-text ">
                         Direção: {{maoEsquerda.direction}}
                     </p>
                 </div>
