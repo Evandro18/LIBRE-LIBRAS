@@ -20,6 +20,9 @@
     "angular-resource": "^1.6.4",
     "bootstrap": "^3.3.7",
     "materialize": "^0.98.2",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "threejs": "*",
+    "leapjs-plugins": "^0.1.11",
+    "leapjs-rigged-hand": "^0.1.4"
   }
 }

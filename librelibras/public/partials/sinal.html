@@ -1,10 +1,21 @@
 <div class="container-fluid">
     <div class="row">
         <div class="card col s12 m8 l8 blue-gray darken-1 ">
-            <div class="card-title #00bfa5 teal accent-4 text-center ">Visualizador</div>
+            <div class="card-title #00bfa5 teal accent-4 text-center "> visualizador</div>
             <br>
             <div class="card-content ">
-                <button ng-click="salvar() " class="btn waves-effect waves-ligh " type="button " name="button ">CAPTURAR</button>
+                <script>
+                    (window.controller = new Leap.Controller)
+                    .use('riggedHand', {
+                            boneLabels: function(boneMesh, leapHand) {
+                                return boneMesh.name
+                            }
+                        })
+                        .connect()
+                </script>
+                <div class="card-action">
+                    <button ng-click="capturar() " class="btn waves-effect waves-ligh " type="button " name="button ">CAPTURAR</button>
+                </div>
             </div>
         </div>
         <div class="col s12 m2 l2">

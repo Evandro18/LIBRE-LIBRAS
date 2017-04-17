@@ -40,20 +40,21 @@ angular.module('librelibras').controller('SinalController',
                     var hand = frame.hands[i];
                     if (hand.type == 'left') {
                         maoEsquerda = Hand(hand);
-                        console.log(maoEsquerda.direction[0]);
+                        //console.log(maoEsquerda.dedos[0].ossos[0].center() + "ponto");
                     } else {
                         maoDireita = Hand(hand);
-                        console.log(maoDireita.direction[0]);
+                        //console.log(maoDireita.direction[0]);
                     }
                     //console.log(mao.dedos[0].ossos[0].center() + " Qual mão? " + mao.type + " Qual dedo? " + fingerTypeMap[mao.dedos[0].type] + " Qual osso? " + boneTypeMap[mao.dedos[0].ossos[0].type]);
                 }
             }
         });
-        $scope.salvar = function() {
+        $scope.capturar = function() {
             if (maoDireita != null) {
                 $scope.maoDireita = {
                     type: maoDireita.type,
-                    direction: vectorToString(maoDireita.direction, 2)
+                    direction: vectorToString(maoDireita.direction, 2),
+
                 };
             }
             if (maoEsquerda != null) {
