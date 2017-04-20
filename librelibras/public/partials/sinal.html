@@ -4,15 +4,6 @@
             <div class="card-title #00bfa5 teal accent-4 text-center "> visualizador</div>
             <br>
             <div class="card-content ">
-                <script>
-                    (window.controller = new Leap.Controller)
-                    .use('riggedHand', {
-                            boneLabels: function(boneMesh, leapHand) {
-                                return boneMesh.name
-                            }
-                        })
-                        .connect()
-                </script>
                 <div class="card-action">
                     <button ng-click="capturar() " class="btn waves-effect waves-ligh " type="button " name="button ">CAPTURAR</button>
                 </div>

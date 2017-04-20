@@ -1,0 +1,4 @@
+librelibras/public/vendor/*
+librelibras/.vscode/*
+librelibras/bower_components/*
+/librelibras/node_modules/*

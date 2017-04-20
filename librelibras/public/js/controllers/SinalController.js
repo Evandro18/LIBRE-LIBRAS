@@ -40,10 +40,10 @@ angular.module('librelibras').controller('SinalController',
                     var hand = frame.hands[i];
                     if (hand.type == 'left') {
                         maoEsquerda = Hand(hand);
-                        //console.log(maoEsquerda.dedos[0].ossos[0].center() + "ponto");
+                        console.log(maoEsquerda.type);
                     } else {
                         maoDireita = Hand(hand);
-                        //console.log(maoDireita.direction[0]);
+                        console.log(maoDireita.type);
                     }
                     //console.log(mao.dedos[0].ossos[0].center() + " Qual mão? " + mao.type + " Qual dedo? " + fingerTypeMap[mao.dedos[0].type] + " Qual osso? " + boneTypeMap[mao.dedos[0].ossos[0].type]);
                 }
