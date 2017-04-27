@@ -1,40 +1,80 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="card col s12 m8 l8 blue-gray darken-1 ">
-            <div class="card-title #00bfa5 teal accent-4 text-center "> visualizador</div>
+        <div class="card col s12 m8 l8 blue-gray darken-1">
+            <div class="card-title #00bfa5 teal accent-4 text-center"> Visualizador </div>
             <br>
-            <div class="card-content ">
+            <div class="card-content">
                 <div class="card-action">
-                    <button ng-click="capturar() " class="btn waves-effect waves-ligh " type="button " name="button ">CAPTURAR</button>
+                    <!-- botão que captura a mão, para então buscar a distância euclidiana -->
+                    <button ng-click="capturar()" class="btn waves-effect waves-ligh" type="button" name="button"> CAPTURAR </button>
                 </div>
             </div>
         </div>
         <div class="col s12 m2 l2">
-            <div class="card text-center ">
-                <div class="card-title ">
+            <div class="card text-center">
+                <div class="card-title">
                     Mão direita
                 </div>
-                <div class="card-content ">
-                    <p class="card-text ">
-                        Tipo mão: {{maoDireita.type}}
+                <div class="card-content">
+                    <p class="card-text">
+                        Distância 1: {{ maoDireita.distancia1 }}
                     </p>
-                    <p class="card-text ">
-                        Direção: {{maoDireita.direction}}
+                    <p class="card-text">
+                        Distância 2: {{ maoDireita.distancia2 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 3: {{ maoDireita.distancia3 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 4: {{ maoDireita.distancia4 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 5: {{ maoDireita.distancia5 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 6: {{ maoDireita.distancia6 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 7: {{ maoDireita.distancia7 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 8: {{ maoDireita.distancia8 }}
                     </p>
                 </div>
             </div>
         </div>
         <div class="col s12 m2 l2">
-            <div class="card text-center ">
-                <div class="card-title ">
+            <div class="card text-center">
+                <div class="card-title">
                     Mão esquerda
                 </div>
-                <div class="card-content ">
-                    <p class="card-text ">
-                        Tipo mão: {{maoEsquerda.type}}
+                <div class="card-content">
+                    <p class="card-text">
+                        <!-- Tipo mão: {{maoEsquerda.type}} -->
                     </p>
-                    <p class="card-text ">
-                        Direção: {{maoEsquerda.direction}}
+                    <p class="card-text">
+                        Distância 1: {{ maoEsquerda.distancia1 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 2: {{ maoEsquerda.distancia2 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 3: {{ maoEsquerda.distancia3 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 4: {{ maoEsquerda.distancia4 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 5: {{ maoEsquerda.distancia5 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 6: {{ maoEsquerda.distancia6 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 7: {{ maoEsquerda.distancia7 }}
+                    </p>
+                    <p class="card-text">
+                        Distância 8: {{ maoEsquerda.distancia8 }}
                     </p>
                 </div>
             </div>
