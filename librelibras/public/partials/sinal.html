@@ -7,6 +7,7 @@
                 <div class="card-action">
                     <!-- botão que captura a mão, para então buscar a distância euclidiana -->
                     <button ng-click="capturar()" class="btn waves-effect waves-ligh" type="button" name="button"> CAPTURAR </button>
+                    <button ng-click="salvaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> SALVAR </button>
                 </div>
             </div>
         </div>
@@ -16,9 +17,10 @@
                     Mão direita
                 </div>
                 <div class="card-content">
-                    <p class="card-text">
-                        Distância 1: {{ maoDireita.distancia1 }}
-                    </p>
+                    <label class="card-text">
+                        <!-- {{sinal.distancia1}} -->
+                        Distância 1: {{ maoDireita.distancia1 }} 
+                    </label>
                     <p class="card-text">
                         Distância 2: {{ maoDireita.distancia2 }}
                     </p>

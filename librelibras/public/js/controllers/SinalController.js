@@ -1,15 +1,29 @@
 angular.module('librelibras').controller('SinalController',
-    function($scope, $resource) {
-        var Sinal = $resource('/sinais/:id');
+    function($scope, $routeParams, Sinal) {
+        // Sinal - devolve um objeto que permite realizar uma série de operações seguindo o padrão REST
 
         var maoDireita = null;
+
         var maoEsquerda = null;
 
-        var handID = '';
+        var maoID = '';
 
-        var boneTypeMap = ["Metacarpal", "Proximal phalanx", "Intermediate phalanx", "Distal phalanx"];
+        var mapearTipoOsso = ["Metacarpal", "Falange proximal", "Falange intermediária", "Falange distal"];
 
-        var fingerTypeMap = ["Thumb", "Index finger", "Middle finger", "Ring finger", "Pinky finger"];
+        var mapearTipoDedo = ["Polegar", "Dedo indicador", "Dedo do meio", "Dedo anelar", "Dedo mindinho"];
+
+        if ($routeParams.sinalId) {
+            Sinal.get({id: $routeParams.sinalId}, 
+                function(sinal) {
+                    $scope.sinal = sinal;
+                },
+                function(erro) {
+                    $scope.mensagem =  {texto: 'Erro'};
+                }
+        );
+        } else {
+            $scope.sinal = new Sinal();
+        }
 
         function Finger(finger) {
             this.finger = finger;
@@ -45,7 +59,7 @@ angular.module('librelibras').controller('SinalController',
                         //console.log(maoEsquerda.dedos[0].ossos[0].center() + "ponto");
                     } else {
                         maoDireita = Hand(hand);
-                        console.log(boneTypeMap[maoDireita.dedos[1].ossos[3].type]);
+                        console.log(mapearTipoOsso[maoDireita.dedos[1].ossos[3].type]);
                         // console.log(maoDireita.dedos[0].type());
                     
                     //console.log(mao.dedos[0].ossos[0].center() + " Qual mão? " + mao.type + " Qual dedo? " + fingerTypeMap[mao.dedos[0].type] + " Qual osso? " + boneTypeMap[mao.dedos[0].ossos[0].type]);
@@ -79,6 +93,20 @@ angular.module('librelibras').controller('SinalController',
                     distancia8: convertToEuclidenDistance(maoEsquerda.dedos[2].ossos[3].center(), maoEsquerda.dedos[1].ossos[3].center()).toFixed(2),
                 };
             }
+            // console.log($scope.sinal.distancia1);
+
+        };
+
+        $scope.salvaSinal = function() {
+            $scope.sinal = maoDireita;
+            $scope.sinal.$save()
+            .then(function(){
+                $scope.mensagem = {texto: 'Salvo com sucesso!'};
+                $scope.sinal = new Sinal();
+            })
+            .catch(function(erro) {
+                $scope.mensagem = {texto: 'Erro ao salvar!'};
+            });
         };
 
     });
@@ -98,3 +126,4 @@ function convertToEuclidenDistance(vector1, vector2) {
 
     return Math.sqrt(Math.pow((vector1[0] - vector2[0]), 2) + Math.pow((vector1[1] - vector2[1]), 2) + Math.pow((vector1[2] - vector2[2]), 2));
 }
+

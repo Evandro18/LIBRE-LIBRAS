@@ -10,7 +10,9 @@
     "express-load": "^1.1.15",
     "method-override": "^2.3.8"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "mongoose": "^4.9.7"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"

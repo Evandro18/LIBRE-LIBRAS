@@ -1,4 +1,5 @@
 <!Doctype html>
+<!-- importa a biblioteca e adiciona-se o atributo ng-app na área que será controlada pelo AngularJS -->
 <html ng-app="librelibras">
 
 <head>
@@ -15,6 +16,7 @@
 </head>
 
 <body>
+    <!-- ng-view sinaliza para o sistema de rotas a área da página que receberá views parciais -->
     <div ng-view>
 
     </div>
@@ -28,6 +30,7 @@
     <script src="vendor/angular-route/angular-route.js"></script>
     <script src="vendor/angular-resource/angular-resource.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/services/SinalServices.js"></script>
     <script src="js/controllers/SinalController.js"></script>
 </body>
 

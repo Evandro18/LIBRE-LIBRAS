@@ -1,5 +1,8 @@
+// Route - identificador da rota
+// Método do protocolo http para salvar
+
 module.exports = function(app) {
-    var controller = app.controllers.contato;
+    var controller = app.controllers.sinal;
 	app.route('/sinal')
 		.post(controller.salvaSinal);    
 }
