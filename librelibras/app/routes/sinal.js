@@ -4,5 +4,6 @@
 module.exports = function(app) {
     var controller = app.controllers.sinal;
 	app.route('/sinal')
-		.post(controller.salvaSinal);    
+		.post(controller.salvaSinal)
+		.get(controller.listaSinais);    
 }

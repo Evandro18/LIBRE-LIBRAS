@@ -1,10 +1,20 @@
 angular.module('librelibras').controller('SinalController',
     function($scope, $routeParams, Sinal) {
-        // Sinal - devolve um objeto que permite realizar uma série de operações seguindo o padrão REST
+        // ^ Sinal - devolve um objeto que permite realizar uma série de operações seguindo o padrão REST
+        
+        var hand = '';
 
-        var maoDireita = null;
+        hand.maoDireita = '';
 
-        var maoEsquerda = null;
+        hand.maoEsquerda = '';
+
+        $scope.hand = '';
+
+        maoDireita = '';
+
+        maoEsquerda = '';
+
+        // $scope.hand.maoDireita.d1 = '';
 
         var maoID = '';
 
@@ -20,92 +30,69 @@ angular.module('librelibras').controller('SinalController',
                 function(erro) {
                     $scope.mensagem =  {texto: 'Erro'};
                 }
-        );
+                );
         } else {
-            $scope.sinal = new Sinal();
+            $scope.hand = new Sinal();
         }
 
-        function Finger(finger) {
-            this.finger = finger;
-            finger.ossos = [];
-            finger.bones.forEach(function(bone) {
-                finger.ossos.push(bone);
-            }, this);
-            return finger;
-        };
-
-        function Hand(hand) {
-            this.hand = hand;
-            hand.dedos = [];
-            // pointables - coisas que podem ser apontadas
-            if (hand.pointables.length > 0) {
-                for (j = 0; j < hand.pointables.length; j++) {
-                    var pointable = hand.pointables[j];
-                    var dedo = new Finger(pointable);
-                    hand.dedos.push(dedo);
-                }
-                return hand;
-            }
-        };
-
         var controllerOptions = { enableGestures: true };
-        // metódo que inicia a leitura através do Leap
+
+        // metódo que inicia a leitura através do Leap Motion
         Leap.loop(controllerOptions, function(frame) {
             if (frame.hands.length > 0) {
                 for (var i = 0; i < frame.hands.length; i++) {
-                    var hand = frame.hands[i];
+                    hand = frame.hands[i];
                     if (hand.type == 'left') {
-                        maoEsquerda = Hand(hand);
-                        //console.log(maoEsquerda.dedos[0].ossos[0].center() + "ponto");
+                        hand.maoEsquerda = hand;
                     } else {
-                        maoDireita = Hand(hand);
-                        console.log(mapearTipoOsso[maoDireita.dedos[1].ossos[3].type]);
-                        // console.log(maoDireita.dedos[0].type());
-                    
-                    //console.log(mao.dedos[0].ossos[0].center() + " Qual mão? " + mao.type + " Qual dedo? " + fingerTypeMap[mao.dedos[0].type] + " Qual osso? " + boneTypeMap[mao.dedos[0].ossos[0].type]);
+                        hand.maoDireita = hand;
+                        // console.log(hand.maoDireita);
+                    }
                 }
             }
-        }
-    });
+        });
+
+        // Função que captura o sinal 
         $scope.capturar = function() {
-            if (maoDireita != null) {
-                $scope.maoDireita = {
-                    distancia1: convertToEuclidenDistance(maoDireita.palmPosition, maoDireita.dedos[0].ossos[3].center()).toFixed(2),
-                    distancia2: convertToEuclidenDistance(maoDireita.palmPosition, maoDireita.dedos[1].ossos[3].center()).toFixed(2),
-                    distancia3: convertToEuclidenDistance(maoDireita.palmPosition, maoDireita.dedos[2].ossos[3].center()).toFixed(2),
-                    distancia4: convertToEuclidenDistance(maoDireita.palmPosition, maoDireita.dedos[3].ossos[3].center()).toFixed(2),
-                    distancia5: convertToEuclidenDistance(maoDireita.palmPosition, maoDireita.dedos[4].ossos[3].center()).toFixed(2),
-                    distancia6: convertToEuclidenDistance(maoDireita.dedos[4].ossos[3].center(), maoDireita.dedos[3].ossos[3].center()).toFixed(2),
-                    distancia7: convertToEuclidenDistance(maoDireita.dedos[3].ossos[3].center(), maoDireita.dedos[2].ossos[3].center()).toFixed(2),
-                    distancia8: convertToEuclidenDistance(maoDireita.dedos[2].ossos[3].center(), maoDireita.dedos[1].ossos[3].center()).toFixed(2),
+            console.log('capturar');
+            if (hand.maoDireita != null) {
+             maoDireita.distanciaPolegar = convertToEuclidenDistance(hand.maoDireita.palmPosition, hand.maoDireita.fingers[0].dipPosition).toFixed(2);
+             maoDireita.distanciaIndicador = convertToEuclidenDistance(hand.maoDireita.palmPosition, hand.maoDireita.fingers[1].dipPosition).toFixed(2);
+             maoDireita.distanciaMedio = convertToEuclidenDistance(hand.maoDireita.palmPosition, hand.maoDireita.fingers[2].dipPosition).toFixed(2);
+             maoDireita.distanciaAnelar = convertToEuclidenDistance(hand.maoDireita.palmPosition, hand.maoDireita.fingers[3].dipPosition).toFixed(2);
+             maoDireita.distanciaMindinho = convertToEuclidenDistance(hand.maoDireita.palmPosition, hand.maoDireita.fingers[4].dipPosition).toFixed(2);
+             maoDireita.distanciaMindinhoAnelar = convertToEuclidenDistance(hand.maoDireita.fingers[4].dipPosition, hand.maoDireita.fingers[3].dipPosition).toFixed(2);
+             maoDireita.distanciaAnelarMedio = convertToEuclidenDistance(hand.maoDireita.fingers[3].dipPosition, hand.maoDireita.fingers[2].dipPosition).toFixed(2);
+             maoDireita.distanciaMedioIndicador = convertToEuclidenDistance(hand.maoDireita.fingers[2].dipPosition, hand.maoDireita.fingers[1].dipPosition).toFixed(2);
+             $scope.hand.direita = maoDireita;
+             console.log(maoDireita.distanciaPolegar);
 
-                };
-            }
-            if (maoEsquerda != null) {
-                $scope.maoEsquerda = {
-                    distancia1: convertToEuclidenDistance(maoEsquerda.palmPosition, maoEsquerda.dedos[0].ossos[3].center()).toFixed(2),
-                    distancia2: convertToEuclidenDistance(maoEsquerda.palmPosition, maoEsquerda.dedos[1].ossos[3].center()).toFixed(2),
-                    distancia3: convertToEuclidenDistance(maoEsquerda.palmPosition, maoEsquerda.dedos[2].ossos[3].center()).toFixed(2),
-                    distancia4: convertToEuclidenDistance(maoEsquerda.palmPosition, maoEsquerda.dedos[3].ossos[3].center()).toFixed(2),
-                    distancia5: convertToEuclidenDistance(maoEsquerda.palmPosition, maoEsquerda.dedos[4].ossos[3].center()).toFixed(2),
-                    distancia6: convertToEuclidenDistance(maoEsquerda.dedos[4].ossos[3].center(), maoEsquerda.dedos[3].ossos[3].center()).toFixed(2),
-                    distancia7: convertToEuclidenDistance(maoEsquerda.dedos[3].ossos[3].center(), maoEsquerda.dedos[2].ossos[3].center()).toFixed(2),
-                    distancia8: convertToEuclidenDistance(maoEsquerda.dedos[2].ossos[3].center(), maoEsquerda.dedos[1].ossos[3].center()).toFixed(2),
-                };
-            }
-            // console.log($scope.sinal.distancia1);
+         };
 
+         if (hand.maoEsquerda != null) {
+            maoEsquerda.distanciaPolegar = convertToEuclidenDistance(hand.maoEsquerda.palmPosition, hand.maoEsquerda.fingers[0].dipPosition).toFixed(2);
+            maoEsquerda.distanciaIndicador = convertToEuclidenDistance(hand.maoEsquerda.palmPosition, hand.maoEsquerda.fingers[1].dipPosition).toFixed(2);
+            maoEsquerda.distanciaMedio = convertToEuclidenDistance(hand.maoEsquerda.palmPosition, hand.maoEsquerda.fingers[2].dipPosition).toFixed(2);
+            maoEsquerda.distanciaAnelar = convertToEuclidenDistance(hand.maoEsquerda.palmPosition, hand.maoEsquerda.fingers[3].dipPosition).toFixed(2);
+            maoEsquerda.distanciaMindinho = convertToEuclidenDistance(hand.maoEsquerda.palmPosition, hand.maoEsquerda.fingers[4].dipPosition).toFixed(2);
+            maoEsquerda.distanciaMindinhoAnelar = convertToEuclidenDistance(hand.maoEsquerda.fingers[4].dipPosition, hand.maoEsquerda.fingers[3].dipPosition).toFixed(2);
+            maoEsquerda.distanciaAnelarMedio = convertToEuclidenDistance(hand.maoEsquerda.fingers[3].dipPosition, hand.maoEsquerda.fingers[2].dipPosition).toFixed(2);
+            maoEsquerda.distanciaMedioIndicador = convertToEuclidenDistance(hand.maoEsquerda.fingers[2].dipPosition, hand.maoEsquerda.fingers[1].dipPosition).toFixed(2);
+            $scope.hand.esquerda = maoEsquerda;
         };
+    };
 
+        // Função que salva o sinal
         $scope.salvaSinal = function() {
-            $scope.sinal = maoDireita;
-            $scope.sinal.$save()
+            $scope.hand.$save()
             .then(function(){
                 $scope.mensagem = {texto: 'Salvo com sucesso!'};
                 $scope.sinal = new Sinal();
+                console.log('salvaSinal');
             })
             .catch(function(erro) {
                 $scope.mensagem = {texto: 'Erro ao salvar!'};
+                console.log('salvaSinal' + erro);
             });
         };
 
@@ -113,7 +100,6 @@ angular.module('librelibras').controller('SinalController',
 
 // converte em String e limita o número de casas decimas a dois "direction: vectorToString(maoEsquerda.direction, 2)"
 function vectorToString(vector, digits) {
-
     if (typeof digits === "undefined") {
         digits = 1;
     }
@@ -123,7 +109,6 @@ function vectorToString(vector, digits) {
 }
 
 function convertToEuclidenDistance(vector1, vector2) {
-
     return Math.sqrt(Math.pow((vector1[0] - vector2[0]), 2) + Math.pow((vector1[1] - vector2[1]), 2) + Math.pow((vector1[2] - vector2[2]), 2));
 }
 

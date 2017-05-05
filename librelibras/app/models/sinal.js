@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 module.exports = function() {
 	var schema = mongoose.Schema({
-		mao: {
+		hand: {
 			type: String
 		},
 		distanciaPolegar: {

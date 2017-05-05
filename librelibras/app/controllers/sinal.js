@@ -6,7 +6,7 @@ module.exports = function(app) {
 	var controller = {};
 
 	controller.salvaSinal = function(req, res) {
-		
+		console.log('Salvando');
 		Sinal.create(req.body)
 		.then(
 			function(sinal) {
@@ -16,6 +16,17 @@ module.exports = function(app) {
 				console.log(erro);
 				res.status(500).json(erro);
 			});
+	}
+
+	controller.listaSinais = function(req, res) {
+		Sinal.find().exec()
+		.then(function(sinais){
+			res.json(sinais);
+		},
+		function(erro) {
+			res.status(500).json(erro);
+			console.log('Erro');
+		});
 	}
 	return controller;
 };
