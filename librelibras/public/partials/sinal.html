@@ -8,6 +8,7 @@
                     <!-- botão que captura a mão, para então buscar a distância euclidiana -->
                     <button ng-click="capturar()" class="btn waves-effect waves-ligh" type="button" name="button"> CAPTURAR </button>
                     <button ng-click="salvaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> SALVAR </button>
+                    <button ng-click="comparaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> COMPARAR </button>
                 </div>
             </div>
         </div>
@@ -18,28 +19,28 @@
                 </div>
                 <div class="card-content">
                     <p class="card-text">
-                        Distância 1: {{ hand.maoDireita.distanciaPolegar }} 
+                        Distância 1: {{ maos[0].distanciaPolegar }}
                     </p>
                     <p class="card-text">
-                        Distância 2: {{ hand.maoDireita.distanciaIndicador }}
+                        Distância 2: {{ maos[0].distanciaIndicador }}
                     </p>
                     <p class="card-text">
-                        Distância 3: {{ hand.maoDireita.distanciaMedio }}
+                        Distância 3: {{ maos[0].distanciaMedio }}
                     </p>
                     <p class="card-text">
-                        Distância 4: {{ hand.maoDireita.distanciaAnelar }}
+                        Distância 4: {{ maos[0].distanciaAnelar }}
                     </p>
                     <p class="card-text">
-                        Distância 5: {{ hand.maoDireita.distanciaMindinho }}
+                        Distância 5: {{ maos[0].distanciaMindinho }}
                     </p>
                     <p class="card-text">
-                        Distância 6: {{ hand.maoDireita.distanciaMindinhoAnelar }}
+                        Distância 6: {{ maos[0].distanciaMindinhoAnelar }}
                     </p>
                     <p class="card-text">
-                        Distância 7: {{ hand.maoDireita.distanciaAnelarMedio }}
+                        Distância 7: {{ maos[0].distanciaAnelarMedio }}
                     </p>
                     <p class="card-text">
-                        Distância 8: {{ hand.maoDireita.distanciaMedioIndicador }}
+                        Distância 8: {{ maos[0].distanciaMedioIndicador }}
                     </p>
                 </div>
             </div>
@@ -53,28 +54,28 @@
                     <p class="card-text">
                     </p>
                     <p class="card-text">
-                        Distância 1: {{ hand.maoEsquerda.distanciaPolegar }}
+                        Distância 1: {{ maos[1].distanciaPolegar }}
                     </p>
                     <p class="card-text">
-                        Distância 2: {{ hand.maoEsquerda.distanciaIndicador }}
+                        Distância 2: {{ maos[1].distanciaIndicador }}
                     </p>
                     <p class="card-text">
-                        Distância 3: {{ hand.maoEsquerda.distanciaMedio }}
+                        Distância 3: {{ maos[1].distanciaMedio }}
                     </p>
                     <p class="card-text">
-                        Distância 4: {{ hand.maoEsquerda.distanciaAnelar }}
+                        Distância 4: {{ maos[1].distanciaAnelar }}
                     </p>
                     <p class="card-text">
-                        Distância 5: {{ hand.maoEsquerda.distanciaMindinho }}
+                        Distância 5: {{ maos[1].distanciaMindinho }}
                     </p>
                     <p class="card-text">
-                        Distância 6: {{ hand.maoEsquerda.distanciaMindinhoAnelar }}
+                        Distância 6: {{ maos[1].distanciaMindinhoAnelar }}
                     </p>
                     <p class="card-text">
-                        Distância 7: {{ hand.maoEsquerda.distanciaAnelarMedio }}
+                        Distância 7: {{ maos[1].distanciaAnelarMedio }}
                     </p>
                     <p class="card-text">
-                        Distância 8: {{ hand.maoEsquerda.distanciaMedioIndicador }}
+                        Distância 8: {{ maos[1].distanciaMedioIndicador }}
                     </p>
                 </div>
             </div>
