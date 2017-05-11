@@ -12,7 +12,6 @@
     "mongoose": "^4.9.7"
   },
   "devDependencies": {
-    "mongoose": "^4.9.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

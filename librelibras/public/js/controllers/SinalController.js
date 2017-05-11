@@ -73,8 +73,11 @@ angular.module('librelibras').controller('SinalController',
 
         $scope.comparaSinal = function() {
             $scope.sinal.$compara()
-                .then(function(erro) {
-                    console.log(erro);
+                .then(function() {
+                    console.log("Funcionou");
+                })
+                .catch(function(erro) {
+                    console.log("Erro");
                 });
         }
 

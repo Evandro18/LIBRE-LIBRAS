@@ -5,7 +5,6 @@ module.exports = function(app) {
     var controller = app.controllers.sinal;
     app.route('/sinal')
         .post(controller.salvaSinal)
-        .get(controller.listaSinais);
-
-    app.route('/sinal/:id')
+        .get(controller.listaSinais)
+        .put(controller.comparaSinal);
 }
