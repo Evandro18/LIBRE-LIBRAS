@@ -10,40 +10,41 @@ module.exports = function(app) {
     controller.salvaSinal = function(req, res) {
         console.log(req.body);
         Sinal.create(req.body)
-            .then(
-                function(sinal) {
-                    res.json(sinal);
-                },
-                function(erro) {
-                    console.log(erro);
-                    res.status(500).json(erro);
-                });
+        .then(
+            function(sinal) {
+                res.json(sinal);
+            },
+            function(erro) {
+                console.log(erro);
+                res.status(500).json(erro);
+            });
     }
 
     controller.listaSinais = function(req, res) {
         Sinal.find().exec()
-            .then(function(sinais) {
-                    res.json(sinais);
-                },
-                function(erro) {
-                    res.status(git500).json(erro);
-                    console.log('Erro');
-                });
+        .then(function(sinais) {
+            res.json(sinais);
+        },
+        function(erro) {
+            res.status(git500).json(erro);
+            console.log('Erro');
+        });
     }
 
     controller.comparaSinal = function(req, res) {
         var dados = req.body;
-        Sinal.findOne().exec()
-            .then(function(sinais) {
-                    var similaridade = similarity(dados.distancias, sinais.distancias);
-                    console.log("Coseno: " + similaridade);
-                    console.log("Euclidiana: " + euclidian(dados.distancias, sinais.distancias));
-                    res.json(similaridade);
-                },
-                function(erro) {
-                    res.status(500).json(erro);
-                    console.log('Erro');
-                });
+        Sinal.find().exec()
+        .then(function(sinais) {
+            sinais.forEach(function(sinal){
+                // console.log(sinal);
+                console.log(sinal.nomeSinal + " coseno " + similarity(dados.distancias, sinal.distancias));
+                console.log(sinal.nomeSinal + " euclidiana " + euclidian(dados.distancias, sinal.distancias));
+            })
+        },
+        function(erro) {
+            res.status(500).json(erro);
+            console.log('Erro');
+        });
     }
 
     return controller;
