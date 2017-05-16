@@ -1,6 +1,7 @@
 // Controller faz ligação entre a página (view) e os dados (model)
 // Exports é uma função que ao ser chamada retornará uma instância do Express
 var similarity = require('compute-cosine-similarity');
+var euclidian = require('euclidean-distance')
 
 module.exports = function(app) {
     var Sinal = app.models.sinal;
@@ -34,8 +35,9 @@ module.exports = function(app) {
         var dados = req.body;
         Sinal.findOne().exec()
             .then(function(sinais) {
-                    var similaridade = similarity(req.body.distancias, sinais.distancias);
-                    console.log(similaridade);
+                    var similaridade = similarity(dados.distancias, sinais.distancias);
+                    console.log("Coseno: " + similaridade);
+                    console.log("Euclidiana: " + euclidian(dados.distancias, sinais.distancias));
                     res.json(similaridade);
                 },
                 function(erro) {

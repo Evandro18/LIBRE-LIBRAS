@@ -60,9 +60,9 @@ angular.module('librelibras').controller('SinalController',
 
         function pegaDistancias(objMao) {
             return distancias = [
-                objMao.yaw().toFixed(2),
+                /*objMao.yaw().toFixed(2),
                 objMao.roll().toFixed(2),
-                objMao.pitch().toFixed(2),
+                objMao.pitch().toFixed(2),*/
                 converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[0].dipPosition).toFixed(2),
                 converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[1].dipPosition).toFixed(2),
                 converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[2].dipPosition).toFixed(2),
