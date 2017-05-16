@@ -29,6 +29,7 @@ angular.module('librelibras').controller('SinalController',
                 for (var i = 0; i < frame.hands.length; i++) {
                     if (frame.hands[i].type == 'left') {
                         maoEsquerdaTemp = frame.hands[i];
+                        //console.log(maoEsquerdaTemp.yaw() + "\n" + maoEsquerdaTemp.pitch() + "\n" + maoEsquerdaTemp.roll());
                     } else {
                         maoDireitaTemp = frame.hands[i];
                     }
@@ -46,40 +47,42 @@ angular.module('librelibras').controller('SinalController',
                 $scope.maos = [];
             }
             if (maoDireitaTemp) {
-                $scope.maos.push(pegaDistancias(maoDireitaTemp));
+                $scope.maos = pegaDistancias(maoDireitaTemp);
             }
 
             if (maoEsquerdaTemp) {
-                $scope.maos.push(pegaDistancias(maoEsquerdaTemp));
+                $scope.maos = pegaDistancias(maoEsquerdaTemp);
             }
 
-            $scope.sinal.maos = $scope.maos;
-            console.log($scope.sinal);
+            $scope.sinal.distancias = $scope.maos;
+            console.log($scope.sinal.distancias);
         };
 
         function pegaDistancias(objMao) {
-            return mao = {
-                lado: objMao.type,
-                distanciaPolegar: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[0].dipPosition).toFixed(2),
-                distanciaIndicador: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[1].dipPosition).toFixed(2),
-                distanciaMedio: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[2].dipPosition).toFixed(2),
-                distanciaAnelar: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[3].dipPosition).toFixed(2),
-                distanciaMindinho: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[4].dipPosition).toFixed(2),
-                distanciaMindinhoAnelar: converteParaDistEuclidiana(objMao.fingers[4].dipPosition, objMao.fingers[3].dipPosition).toFixed(2),
-                distanciaAnelarMedio: converteParaDistEuclidiana(objMao.fingers[3].dipPosition, objMao.fingers[2].dipPosition).toFixed(2),
-                distanciaMedioIndicador: converteParaDistEuclidiana(objMao.fingers[2].dipPosition, objMao.fingers[1].dipPosition).toFixed(2)
-            };
+            return distancias = [
+                objMao.yaw().toFixed(2),
+                objMao.roll().toFixed(2),
+                objMao.pitch().toFixed(2),
+                converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[0].dipPosition).toFixed(2),
+                converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[1].dipPosition).toFixed(2),
+                converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[2].dipPosition).toFixed(2),
+                converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[3].dipPosition).toFixed(2),
+                converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[4].dipPosition).toFixed(2),
+                converteParaDistEuclidiana(objMao.fingers[4].dipPosition, objMao.fingers[3].dipPosition).toFixed(2),
+                converteParaDistEuclidiana(objMao.fingers[3].dipPosition, objMao.fingers[2].dipPosition).toFixed(2),
+                converteParaDistEuclidiana(objMao.fingers[2].dipPosition, objMao.fingers[1].dipPosition).toFixed(2)
+            ];
         }
 
         $scope.comparaSinal = function() {
             $scope.sinal.$compara()
-                .then(function() {
-                    console.log("Funcionou");
+                .then(function(resposta) {
+                    console.log(resposta);
                 })
                 .catch(function(erro) {
                     console.log("Erro");
                 });
-        }
+        };
 
         // Função que salva o sinal
         $scope.salvaSinal = function() {

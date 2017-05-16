@@ -1,9 +1,56 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="card col s12 m8 l8 blue-gray darken-1">
+        <div class="card col s12 m8 l8 blue-gray darken-1 small card-small">
             <div class="card-title #00bfa5 teal accent-4 text-center"> Visualizador </div>
             <br>
             <div class="card-content">
+
+                <style>
+                    body {
+                        font-family: Helvetica;
+                    }
+                    
+                    canvas {
+                        position: fixed;
+                        width: 500px;
+                        height: 500px;
+                        top: 0;
+                        left: 0;
+                    }
+                    
+                    #debugger {
+                        top: 0;
+                        left: 0;
+                        position: fixed;
+                        background: black;
+                        color: #eee;
+                        padding: 4px;
+                        display: none;
+                    }
+                </style>
+
+                <script>
+                    Leap.loop({})
+                        .use('playback', {
+                            recording: 'recorder/recordings/pinch-57fps.json.lz',
+                            requiredProtocolVersion: 6,
+                            pauseOnHand: true,
+                            loop: true
+                        })
+                        .use('riggedHand');
+                    window.controller = Leap.loopController;
+
+                    window.load = function() {
+                        var canvas = document.getElementsByTagName("canvas");
+                        canvas[0].style.width = '850px';
+                        canvas[0].style.height = '500px';
+                        canvas[0].style.marginTop = '45px';
+                        canvas[0].style.marginLeft = '45px';
+                        var card = document.getElementsByClassName("card-content");
+                    }
+
+                    window.load();
+                </script>
                 <div class="card-action">
                     <!-- botão que captura a mão, para então buscar a distância euclidiana -->
                     <button ng-click="capturar()" class="btn waves-effect waves-ligh" type="button" name="button"> CAPTURAR </button>
