@@ -2,7 +2,9 @@
 // Quando adicionamos um documento ao mesmo tempo em que esta-mos criando uma collection
 
 var mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
+
 module.exports = function() {
     var schema = mongoose.Schema({
         distancias: {
