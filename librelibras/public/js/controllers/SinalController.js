@@ -8,6 +8,10 @@ angular.module('librelibras').controller('SinalController',
 
         $scope.maos = [];
 
+        $scope.sinal = {};
+
+        $scope.sinal.nomeSinal = "";
+
         if ($routeParams.sinalId) {
             Sinal.get({ id: $routeParams.sinalId },
                 function(sinal) {

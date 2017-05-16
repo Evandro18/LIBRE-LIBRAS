@@ -6,6 +6,7 @@
             <div class="card-content">
                 <div class="card-action">
                     <!-- botão que captura a mão, para então buscar a distância euclidiana -->
+                    <input ng-model="sinal.nomeSinal" type="search" class="form-control ng-pristine ng-untouched ng-valid ng-empty" placeholder="Digite o nome do sinal">
                     <button ng-click="capturar()" class="btn waves-effect waves-ligh" type="button" name="button"> CAPTURAR </button>
                     <button ng-click="salvaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> SALVAR </button>
                     <button ng-click="comparaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> COMPARAR </button>
