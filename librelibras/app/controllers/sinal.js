@@ -35,17 +35,33 @@ module.exports = function(app) {
         var dados = req.body;
         Sinal.find().exec()
         .then(function(sinais) {
+            
+            //****************************************
+            var vetorDistancias = new Array();
             sinais.forEach(function(sinal){
-                // console.log(sinal);
-                console.log(sinal.nomeSinal + " coseno " + similarity(dados.distancias, sinal.distancias));
-                console.log(sinal.nomeSinal + " euclidiana " + euclidian(dados.distancias, sinal.distancias));
+                // console.log(sinal.nomeSinal + " coseno " + similarity(dados.distancias, sinal.distancias));
+                // console.log(sinal.nomeSinal + " euclidiana " + euclidian(dados.distancias, sinal.distancias));
+                var distancia = euclidian(dados.distancias, sinal.distancias);
+                var elemento = {
+                    distancia: distancia,
+                    sinal: sinal
+                };
+                vetorDistancias.push(elemento);
+            });
+
+            vetorDistancias.sort(function(a, b){
+                return a.distancia - b.distancia;
+            });
+
+            vetorDistancias.forEach(function(elemento) {
+                console.log(elemento.sinal.nomeSinal + ": " + elemento.distancia);
             })
+            //****************************************
         },
         function(erro) {
             res.status(500).json(erro);
             console.log('Erro');
         });
     }
-
     return controller;
 };
