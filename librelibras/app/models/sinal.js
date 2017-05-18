@@ -7,13 +7,18 @@ mongoose.Promise = global.Promise;
 
 module.exports = function() {
     var schema = mongoose.Schema({
-        distancias: {
+        mao: [mongoose.Schema({
+         distancias: {
             type: [Number]
         },
-
+        angulos: {
+            type: [Number]
+        } 
+    })],
         nomeSinal: {
             type: String
         }
+        
     });
     // Retorna o sinal do banco de dados
     return mongoose.model('Sinal', schema);

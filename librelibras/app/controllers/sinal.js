@@ -35,15 +35,17 @@ module.exports = function(app) {
         var dados = req.body;
         Sinal.find().exec()
         .then(function(sinais) {
-            
             //****************************************
             var vetorDistancias = new Array();
             sinais.forEach(function(sinal){
                 // console.log(sinal.nomeSinal + " coseno " + similarity(dados.distancias, sinal.distancias));
                 // console.log(sinal.nomeSinal + " euclidiana " + euclidian(dados.distancias, sinal.distancias));
-                var distancia = euclidian(dados.distancias, sinal.distancias);
+                var distancia = euclidian(dados.mao[0].distancias, sinal.mao[0].distancias);
+                var distanciaAngulos = euclidian(dados.mao[0].angulos, sinal.mao[0].angulos);
+                
                 var elemento = {
                     distancia: distancia,
+                    angulos: distanciaAngulos,
                     sinal: sinal
                 };
                 vetorDistancias.push(elemento);
@@ -54,8 +56,11 @@ module.exports = function(app) {
             });
 
             vetorDistancias.forEach(function(elemento) {
-                console.log(elemento.sinal.nomeSinal + ": " + elemento.distancia);
-            })
+
+                console.log(elemento.sinal.nomeSinal + ": " + elemento.distancia + " " + elemento.angulos);
+
+            });
+            res.send(vetorDistancias[0].sinal);
             //****************************************
         },
         function(erro) {
