@@ -10,6 +10,10 @@
                         font-family: Helvetica;
                     }
                     
+                    img {
+                        visibility: none;
+                    }
+                    
                     canvas {
                         position: fixed;
                         width: 500px;
@@ -32,13 +36,27 @@
                 <script>
                     Leap.loop({})
                         .use('playback', {
-                            recording: 'recorder/recordings/pinch-57fps.json.lz',
+                            recording: 'recordings-pinch-57fps-57fps.json',
                             requiredProtocolVersion: 6,
                             pauseOnHand: true,
-                            loop: true
                         })
-                        .use('riggedHand');
+                        .use('riggedHand', {
+                            scale: 1.5,
+                            boneColors: function(boneMesh, leapHand) {
+                                if ((boneMesh.name.indexOf('Finger_') == 0)) {
+                                    return {
+                                        hue: 0.564,
+                                        saturation: leapHand.grabStrength,
+                                        lightness: 0.5
+                                    }
+                                }
+                            }
+                        });
                     window.controller = Leap.loopController;
+
+                    var camera = controller.plugins.riggedHand.camera;
+                    camera.position.set(0, 20, 0);
+                    camera.lookAt(new THREE.Vector3(0, 3, 0));
 
                     window.load = function() {
                         var canvas = document.getElementsByTagName("canvas");
@@ -46,7 +64,6 @@
                         canvas[0].style.height = '500px';
                         canvas[0].style.marginTop = '45px';
                         canvas[0].style.marginLeft = '45px';
-                        var card = document.getElementsByClassName("card-content");
                     }
 
                     window.load();

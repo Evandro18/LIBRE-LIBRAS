@@ -10,63 +10,61 @@ module.exports = function(app) {
     controller.salvaSinal = function(req, res) {
         console.log(req.body);
         Sinal.create(req.body)
-        .then(
-            function(sinal) {
-                res.json(sinal);
-            },
-            function(erro) {
-                console.log(erro);
-                res.status(500).json(erro);
-            });
+            .then(
+                function(sinal) {
+                    res.json(sinal);
+                },
+                function(erro) {
+                    console.log(erro);
+                    res.status(500).json(erro);
+                });
     }
 
     controller.listaSinais = function(req, res) {
         Sinal.find().exec()
-        .then(function(sinais) {
-            res.json(sinais);
-        },
-        function(erro) {
-            res.status(git500).json(erro);
-            console.log('Erro');
-        });
+            .then(function(sinais) {
+                    res.json(sinais);
+                },
+                function(erro) {
+                    res.status(git500).json(erro);
+                    console.log('Erro');
+                });
     }
 
     controller.comparaSinal = function(req, res) {
         var dados = req.body;
         Sinal.find().exec()
-        .then(function(sinais) {
-            //****************************************
-            var vetorDistancias = new Array();
-            sinais.forEach(function(sinal){
-                // console.log(sinal.nomeSinal + " coseno " + similarity(dados.distancias, sinal.distancias));
-                // console.log(sinal.nomeSinal + " euclidiana " + euclidian(dados.distancias, sinal.distancias));
-                var distancia = euclidian(dados.mao[0].distancias, sinal.mao[0].distancias);
-                var distanciaAngulos = euclidian(dados.mao[0].angulos, sinal.mao[0].angulos);
-                
-                var elemento = {
-                    distancia: distancia,
-                    angulos: distanciaAngulos,
-                    sinal: sinal
-                };
-                vetorDistancias.push(elemento);
-            });
+            .then(function(sinais) {
+                    //****************************************
+                    var vetorDistancias = new Array();
+                    sinais.forEach(function(sinal) {
+                        var distancia = euclidian(dados.mao[0].distancias, sinal.mao[0].distancias);
+                        var distanciaAngulos = euclidian(dados.mao[0].angulos, sinal.mao[0].angulos);
 
-            vetorDistancias.sort(function(a, b){
-                return a.distancia - b.distancia;
-            });
+                        var elemento = {
+                            distancia: distancia,
+                            angulos: distanciaAngulos,
+                            sinal: sinal
+                        };
+                        vetorDistancias.push(elemento);
+                    });
 
-            vetorDistancias.forEach(function(elemento) {
+                    vetorDistancias.sort(function(a, b) {
+                        return a.distancia - b.distancia;
+                    });
 
-                console.log(elemento.sinal.nomeSinal + ": " + elemento.distancia + " " + elemento.angulos);
+                    vetorDistancias.forEach(function(elemento) {
 
-            });
-            res.send(vetorDistancias[0].sinal);
-            //****************************************
-        },
-        function(erro) {
-            res.status(500).json(erro);
-            console.log('Erro');
-        });
+                        console.log("Nome: " + elemento.sinal.nomeSinal + ": " + elemento.distancia + " " + elemento.angulos);
+
+                    });
+                    res.send(vetorDistancias[0].sinal);
+                    //****************************************
+                },
+                function(erro) {
+                    res.status(500).json(erro);
+                    console.log('Erro');
+                });
     }
     return controller;
 };

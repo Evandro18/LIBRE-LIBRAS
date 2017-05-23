@@ -10,6 +10,7 @@
     "euclidean-distance": "^1.0.0",
     "express": "^4.15.2",
     "express-load": "^1.1.15",
+    "leapjs-plugins": "^0.1.12",
     "method-override": "^2.3.8",
     "mongoose": "^4.9.7"
   },
