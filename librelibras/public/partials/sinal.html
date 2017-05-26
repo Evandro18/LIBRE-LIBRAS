@@ -5,32 +5,7 @@
             <br>
             <div class="card-content">
 
-                <style>
-                    body {
-                        font-family: Helvetica;
-                    }
-                    
-                    img {
-                        visibility: none;
-                    }
-                    
-                    canvas {
-                        position: fixed;
-                        width: 500px;
-                        height: 500px;
-                        top: 0;
-                        left: 0;
-                    }
-                    
-                    #debugger {
-                        top: 0;
-                        left: 0;
-                        position: fixed;
-                        background: black;
-                        color: #eee;
-                        padding: 4px;
-                        display: none;
-                    }
+
                 </style>
 
                 <script>
@@ -45,7 +20,7 @@
                             boneColors: function(boneMesh, leapHand) {
                                 if ((boneMesh.name.indexOf('Finger_') == 0)) {
                                     return {
-                                        hue: 0.564,
+                                        hue: 0,
                                         saturation: leapHand.grabStrength,
                                         lightness: 0.5
                                     }
@@ -55,13 +30,13 @@
                     window.controller = Leap.loopController;
 
                     var camera = controller.plugins.riggedHand.camera;
-                    camera.position.set(0, 20, 0);
+                    camera.position.set(-1, -10, -13);
                     camera.lookAt(new THREE.Vector3(0, 3, 0));
 
                     window.load = function() {
                         var canvas = document.getElementsByTagName("canvas");
-                        canvas[0].style.width = '850px';
-                        canvas[0].style.height = '500px';
+                        canvas[0].style.width = '62%';
+                        canvas[0].style.height = '64.2%';
                         canvas[0].style.marginTop = '45px';
                         canvas[0].style.marginLeft = '45px';
                     }
