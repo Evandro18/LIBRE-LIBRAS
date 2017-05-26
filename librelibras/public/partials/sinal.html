@@ -5,34 +5,6 @@
             <br>
             <div class="card-content">
 
-                <style>
-                    body {
-                        font-family: Helvetica;
-                    }
-                    
-                    img {
-                        visibility: none;
-                    }
-                    
-                    canvas {
-                        position: fixed;
-                        width: 500px;
-                        height: 500px;
-                        top: 0;
-                        left: 0;
-                    }
-                    
-                    #debugger {
-                        top: 0;
-                        left: 0;
-                        position: fixed;
-                        background: black;
-                        color: #eee;
-                        padding: 4px;
-                        display: none;
-                    }
-                </style>
-
                 <script>
                     Leap.loop({})
                         .use('playback', {
@@ -61,7 +33,7 @@
                     window.load = function() {
                         var canvas = document.getElementsByTagName("canvas");
                         canvas[0].style.width = '850px';
-                        canvas[0].style.height = '500px';
+                        canvas[0].style.height = '430px';
                         canvas[0].style.marginTop = '45px';
                         canvas[0].style.marginLeft = '45px';
                     }
@@ -74,6 +46,7 @@
                     <button ng-click="capturar()" class="btn waves-effect waves-ligh" type="button" name="button"> CAPTURAR </button>
                     <button ng-click="salvaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> SALVAR </button>
                     <button ng-click="comparaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> COMPARAR </button>
+                    <p id="resultado" ng-show="mensagem.sucesso == true" class="alert alert-success">{{mensagem.texto}}</p>
                 </div>
             </div>
         </div>
@@ -84,7 +57,7 @@
                 </div>
                 <div class="card-content">
                     <p class="card-text">
-                        Distância 1: {{ maos[0].distanciaPolegar }}
+                        Distância 1: {{ }}
                     </p>
                     <p class="card-text">
                         Distância 2: {{ maos[0].distanciaIndicador }}
@@ -119,7 +92,7 @@
                     <p class="card-text">
                     </p>
                     <p class="card-text">
-                        Distância 1: {{ maos[1].distanciaPolegar }}
+                        Distância 1: {{ }}
                     </p>
                     <p class="card-text">
                         Distância 2: {{ maos[1].distanciaIndicador }}

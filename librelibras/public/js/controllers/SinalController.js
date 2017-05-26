@@ -31,9 +31,9 @@ angular.module('librelibras').controller('SinalController',
         var controller = Leap.loop(controllerOptions, function(frame) {
             if (frame.hands.length > 0) {
                 for (var i = 0; i < frame.hands.length; i++) {
+                    console.log(frame.hands.length);
                     if (frame.hands[i].type == 'left') {
                         maoEsquerdaTemp = frame.hands[i];
-                        //console.log(maoEsquerdaTemp.yaw() + "\n" + maoEsquerdaTemp.pitch() + "\n" + maoEsquerdaTemp.roll());
                     } else {
                         maoDireitaTemp = frame.hands[i];
                     }
@@ -48,7 +48,7 @@ angular.module('librelibras').controller('SinalController',
 
             console.log('capturar' + "\n");
             if ($scope.maos.length == 2) {
-                $scope.maos = [];
+                $scope.maos = [{}];
             }
             if (maoDireitaTemp) {
                 $scope.maos.push(pegaDistancias(maoDireitaTemp));
@@ -58,31 +58,23 @@ angular.module('librelibras').controller('SinalController',
                 $scope.maos.push(pegaDistancias(maoEsquerdaTemp));
             }
 
-            $scope.sinal.mao = $scope.maos;
-            console.log($scope.sinal.mao);
+            $scope.sinal.maos = $scope.maos;
+            console.log($scope.sinal);
         };
 
         function pegaDistancias(objMao) {
             var mao = {
-                distancias: [
-                    objMao.yaw().toFixed(2),
-                    objMao.roll().toFixed(2),
-                    objMao.pitch().toFixed(2),
-                    converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[0].dipPosition).toFixed(2),
-                    converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[1].dipPosition).toFixed(2),
-                    converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[2].dipPosition).toFixed(2),
-                    converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[3].dipPosition).toFixed(2),
-                    converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[4].dipPosition).toFixed(2),
-                    converteParaDistEuclidiana(objMao.fingers[4].dipPosition, objMao.fingers[3].dipPosition).toFixed(2),
-                    converteParaDistEuclidiana(objMao.fingers[3].dipPosition, objMao.fingers[2].dipPosition).toFixed(2),
-                    converteParaDistEuclidiana(objMao.fingers[2].dipPosition, objMao.fingers[1].dipPosition).toFixed(2)
-                ],
-
-                angulos: [
-                    objMao.yaw().toFixed(2),
-                    objMao.roll().toFixed(2),
-                    objMao.pitch().toFixed(2)
-                ]
+                yaw: objMao.yaw().toFixed(2),
+                roll: objMao.roll().toFixed(2),
+                pitch: objMao.pitch().toFixed(2),
+                distPolegar: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[0].dipPosition).toFixed(2),
+                distIndicador: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[1].dipPosition).toFixed(2),
+                distMedio: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[2].dipPosition).toFixed(2),
+                distAnelar: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[3].dipPosition).toFixed(2),
+                distMindinho: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[4].dipPosition).toFixed(2),
+                distMindinhoAnelar: converteParaDistEuclidiana(objMao.fingers[4].dipPosition, objMao.fingers[3].dipPosition).toFixed(2),
+                distAnelarMedio: converteParaDistEuclidiana(objMao.fingers[3].dipPosition, objMao.fingers[2].dipPosition).toFixed(2),
+                distMedioIndicador: converteParaDistEuclidiana(objMao.fingers[2].dipPosition, objMao.fingers[1].dipPosition).toFixed(2)
             }
             return mao;
         }
@@ -105,6 +97,10 @@ angular.module('librelibras').controller('SinalController',
                     $scope.mensagem = { texto: 'Salvo com sucesso!' };
                     $scope.sinal = new Sinal();
                     console.log('salvaSinal');
+                    $scope.mensagem = {
+                        texto: 'Salvo com sucesso',
+                        sucesso: true
+                    }
                 })
                 .catch(function(erro) {
                     $scope.mensagem = { texto: 'Erro ao salvar!' };

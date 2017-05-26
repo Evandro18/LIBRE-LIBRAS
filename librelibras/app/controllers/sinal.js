@@ -36,18 +36,39 @@ module.exports = function(app) {
         Sinal.find().exec()
             .then(function(sinais) {
                     //****************************************
+                    //TODO: Alterar metodo para comparar duas mãos
                     var vetorDistancias = new Array();
-                    sinais.forEach(function(sinal) {
-                        var distancia = euclidian(dados.mao[0].distancias, sinal.mao[0].distancias);
-                        var distanciaAngulos = euclidian(dados.mao[0].angulos, sinal.mao[0].angulos);
+                    var distanciasCliente = new Array();
+                    var distanciasBanco = new Array();
 
-                        var elemento = {
-                            distancia: distancia,
-                            angulos: distanciaAngulos,
-                            sinal: sinal
-                        };
-                        vetorDistancias.push(elemento);
+                    var listaPropriedades = ['yaw', 'roll', 'pitch', 'distPolegar', 'distIndicador', 'distMedio', 'distAnelar', 'distMindinho', 'distMindinhoAnelar', 'distAnelarMedio', 'distMedioIndicador'];
+                    dados.maos.forEach(function(mao) {
+                        for (chave in mao) {
+                            distanciasCliente.push(mao[chave]);
+                        }
                     });
+
+                    sinais.forEach(function(sinal) {
+                        count = 0;
+                        sinal.maos.forEach(function(mao) {
+                            for (chave of listaPropriedades) {
+                                distanciasBanco.push(mao[chave]);
+                            }
+                        });
+                        count = 0;
+                        console.log("Qtd banco: " + distanciasBanco.length + " qtd Cliente: " + distanciasCliente.length);
+                        if (distanciasBanco.length == distanciasCliente.length) {
+                            var distancia = euclidian(distanciasCliente, distanciasBanco);
+                            console.log(distancia);
+                            distanciasBanco = [];
+                            var elemento = {
+                                distancia: distancia,
+                                sinal: sinal
+                            };
+                            vetorDistancias.push(elemento);
+                        }
+                    });
+                    distanciasCliente = [];
 
                     vetorDistancias.sort(function(a, b) {
                         return a.distancia - b.distancia;
@@ -55,7 +76,7 @@ module.exports = function(app) {
 
                     vetorDistancias.forEach(function(elemento) {
 
-                        console.log("Nome: " + elemento.sinal.nomeSinal + ": " + elemento.distancia + " " + elemento.angulos);
+                        console.log("Nome: " + elemento.sinal.nomeSinal + ": " + elemento.distancia);
 
                     });
                     res.send(vetorDistancias[0].sinal);
