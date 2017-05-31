@@ -6,8 +6,20 @@ canvas {
     pointer-events: none;
 }
 
-.row {}
-
-.row .card-small {
-    height: 650px;
+p {
+    text-align: center;
 }
+
+.card {
+    font-size: 15px;
+}
+
+label {
+    margin: 10px;
+}
+
+.card-action {
+    text-align: center;
+}
+
+.row {}

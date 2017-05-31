@@ -8,40 +8,46 @@ mongoose.Promise = global.Promise;
 module.exports = function() {
     var schema = mongoose.Schema({
         maos: [{
-            yaw: {
-                type: Number
+            distancias: {
+                distPolegar: {
+                    type: Number
+                },
+                distIndicador: {
+                    type: Number
+                },
+                distMedio: {
+                    type: Number
+                },
+                distAnelar: {
+                    type: Number
+                },
+                distMindinho: {
+                    type: Number
+                },
+                distMindinhoAnelar: {
+                    type: Number
+                },
+                distAnelarMedio: {
+                    type: Number
+                },
+                distMedioIndicador: {
+                    type: Number
+                }
             },
-            roll: {
-                type: Number
-            },
-            pitch: {
-                type: Number
-            },
-            distPolegar: {
-                type: Number
-            },
-            distIndicador: {
-                type: Number
-            },
-            distMedio: {
-                type: Number
-            },
-            distAnelar: {
-                type: Number
-            },
-            distMindinho: {
-                type: Number
-            },
-            distMindinhoAnelar: {
-                type: Number
-            },
-            distAnelarMedio: {
-                type: Number
-            },
-            distMedioIndicador: {
-                type: Number
+
+            angulos: {
+                yaw: {
+                    type: Number
+                },
+                pitch: {
+                    type: Number
+                },
+                roll: {
+                    type: Number
+                }
             }
         }],
+
         nomeSinal: {
             type: String,
             index: {
