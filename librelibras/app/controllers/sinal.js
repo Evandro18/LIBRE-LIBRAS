@@ -62,32 +62,34 @@ module.exports = function(app) {
                             distanciasBanco.push(mao.distancias.distIndicador);
                             distanciasBanco.push(mao.distancias.distMedio);
                             distanciasBanco.push(mao.distancias.distAnelar);
-                            distanciasBanco.push(mao.distancias.distAnelar);
+                            distanciasBanco.push(mao.distancias.distMindinho);
                             distanciasBanco.push(mao.distancias.distMindinhoAnelar);
                             distanciasBanco.push(mao.distancias.distAnelarMedio);
                             distanciasBanco.push(mao.distancias.distMedioIndicador);
-                            console.log(distanciasBanco);
-                            angulosBanco.push(mao.angulos.pitch);
-                            angulosBanco.push(mao.angulos.roll);
                             angulosBanco.push(mao.angulos.yaw);
-                            console.log(angulosBanco);
+                            angulosBanco.push(mao.angulos.roll);
+                            angulosBanco.push(mao.angulos.pitch);
                         });
+
+                        count = 0;
+                        if (distanciasBanco.length === distanciasCliente.length) {
+                            var distancia = euclidian(distanciasCliente, distanciasBanco);
+                            var angulo = euclidian(angulosCliente, angulosBanco);
+
+                            var distanciaTotal = ((distancia * 0.7) + (angulo * 0.3));
+
+                            var elemento = {
+                                distancia: distanciaTotal,
+                                sinal: sinal
+                            };
+                            vetorDistancias.push(elemento);
+
+                        }
+                        distanciasBanco = [];
+                        angulosBanco = [];
                     });
-                    count = 0;
-                    console.log("Qtd banco: " + distanciasBanco.length + " qtd Cliente: " + distanciasCliente.length);
-                    if (distanciasBanco.length == distanciasCliente.length) {
-                        var distancia = euclidian(distanciasCliente, distanciasBanco);
-                        var angulo = euclidian(angulosCliente, angulosBanco);
-
-                        var distanciaTotal = (distancia * 0.7) + (angulo * 0.3);
-
-                        var elemento = {
-                            distancia: distanciaTotal,
-                            sinal: sinal
-                        };
-                        vetorDistancias.push(elemento);
-                    }
                     distanciasCliente = [];
+                    angulosCliente = [];
 
                     //ordenação
                     vetorDistancias.sort(function(a, b) {

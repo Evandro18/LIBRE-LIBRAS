@@ -22,4 +22,6 @@ label {
     text-align: center;
 }
 
-.row {}
+.card-text {
+    font-color: blue;
+}
