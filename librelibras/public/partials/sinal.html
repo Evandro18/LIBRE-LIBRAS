@@ -8,42 +8,6 @@
         <div class="card col s12 m7 l7 blue-gray darken-1 large card-large">
             <div class="card-title #00bfa5 text-left text-center"> Visualizador </div>
             <div class="card-content visualizer">
-                <script>
-                    Leap.loop({})
-                        .use('playback', {
-                            recording: 'recordings-pinch-57fps-57fps.json',
-                            requiredProtocolVersion: 6,
-                            pauseOnHand: true,
-                        })
-                        .use('riggedHand', {
-                            scale: 1.5,
-                            boneColors: function(boneMesh, leapHand) {
-                                if ((boneMesh.name.indexOf('Finger_') == 0)) {
-                                    return {
-                                        hue: 0,
-                                        saturation: leapHand.grabStrength,
-                                        lightness: 0.5
-                                    }
-                                }
-                            }
-                        });
-                    window.controller = Leap.loopController;
-
-                    var camera = controller.plugins.riggedHand.camera;
-                    camera.position.set(-1, -10, -13);
-                    camera.lookAt(new THREE.Vector3(0, 3, 0));
-
-                    window.load = function() {
-                        var canvas = document.getElementsByTagName("canvas");
-                        canvas[0].style.width = '64%';
-                        canvas[0].style.height = '45%';
-                        canvas[0].style.marginTop = '100px';
-                        canvas[0].style.marginLeft = '20px';
-                    }
-
-                    window.load();
-                </script>
-
                 <div class="card-action">
                     <p>Cadastrar sinal</p>
                     <!-- botão que captura a mão, para então buscar a distância euclidiana -->

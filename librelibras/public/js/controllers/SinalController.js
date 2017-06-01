@@ -35,16 +35,47 @@ angular.module('librelibras').controller('SinalController',
 
         // metódo que inicia a leitura através do Leap Motion
         var controller = Leap.loop(controllerOptions, function(frame) {
-            if (frame.hands.length > 0) {
-                for (var i = 0; i < frame.hands.length; i++) {
-                    if (frame.hands[i].type === 'left') {
-                        maoEsquerdaTemp = frame.hands[i];
-                    } else {
-                        maoDireitaTemp = frame.hands[i];
+                if (frame.hands.length > 0) {
+                    for (var i = 0; i < frame.hands.length; i++) {
+                        if (frame.hands[i].type === 'left') {
+                            maoEsquerdaTemp = frame.hands[i];
+                        } else {
+                            maoDireitaTemp = frame.hands[i];
+                        }
                     }
                 }
-            }
-        });
+            }).use('playback', {
+                recording: 'recordings-pinch-57fps-57fps.json',
+                requiredProtocolVersion: 6,
+                pauseOnHand: true,
+            })
+            .use('riggedHand', {
+                scale: 1.5,
+                boneColors: function(boneMesh, leapHand) {
+                    if ((boneMesh.name.indexOf('Finger_') == 0)) {
+                        return {
+                            hue: 0,
+                            saturation: leapHand.grabStrength,
+                            lightness: 0.5
+                        }
+                    }
+                }
+            });
+        window.controller = Leap.loopController;
+
+        var camera = controller.plugins.riggedHand.camera;
+        camera.position.set(-1, -10, -13);
+        camera.lookAt(new THREE.Vector3(0, 3, 0));
+
+        window.load = function() {
+            var canvas = document.getElementsByTagName("canvas");
+            canvas[0].style.width = '64%';
+            canvas[0].style.height = '45%';
+            canvas[0].style.marginTop = '100px';
+            canvas[0].style.marginLeft = '20px';
+        }
+
+        window.load();
 
         // Função que captura o sinal 
         $scope.capturar = function() {
