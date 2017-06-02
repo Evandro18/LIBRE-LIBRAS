@@ -31,6 +31,41 @@ module.exports = function(app) {
                 });
     }
 
+    var criaVetoresCliente = function(sinalCliente) {
+        distancias = [];
+        angulos = [];
+        sinalCliente.maos.forEach(function(mao) {
+            for (var distancia in mao.distancias) {
+                distancias.push(mao.distancias[distancia]);
+            }
+
+            for (var angulo in mao.angulos) {
+                angulos.push(mao.angulos[angulo]);
+            }
+        });
+
+        return { distancias: distancias, angulos: angulos };;
+    }
+
+    var criaVetoresBanco = function(sinalBanco) {
+        distancias = [];
+        angulos = [];
+        sinalBanco.maos.forEach(function(mao) {
+            distancias.push(mao.distancias.distPolegar);
+            distancias.push(mao.distancias.distIndicador);
+            distancias.push(mao.distancias.distMedio);
+            distancias.push(mao.distancias.distAnelar);
+            distancias.push(mao.distancias.distMindinho);
+            distancias.push(mao.distancias.distMindinhoAnelar);
+            distancias.push(mao.distancias.distAnelarMedio);
+            distancias.push(mao.distancias.distMedioIndicador);
+            angulos.push(mao.angulos.yaw);
+            angulos.push(mao.angulos.roll);
+            angulos.push(mao.angulos.pitch);
+        });
+        return { distancias: distancias, angulos: angulos };
+    }
+
     controller.comparaSinal = function(req, res) {
         var dados = req.body;
         Sinal.find().exec()
@@ -45,34 +80,16 @@ module.exports = function(app) {
                     var angulosBanco = new Array();
                     var distanciasBanco = new Array();
 
-                    var listaPropriedades = ['distPolegar', 'distIndicador', 'distMedio', 'distAnelar', 'distMindinho', 'distMindinhoAnelar', 'distAnelarMedio', 'distMedioIndicador'];
-                    dados.maos.forEach(function(mao) {
-                        for (var distancia in mao.distancias) {
-                            distanciasCliente.push(mao.distancias[distancia]);
-                        }
-
-                        for (var angulo in mao.angulos) {
-                            angulosCliente.push(mao.angulos[angulo]);
-                        }
-                    });
+                    vetoresCliente = criaVetoresCliente(dados);
+                    distanciasCliente = vetoresCliente.distancias;
+                    angulosCliente = vetoresCliente.angulos;
                     sinais.forEach(function(sinal) {
-                        count = 0;
-                        sinal.maos.forEach(function(mao) {
-                            distanciasBanco.push(mao.distancias.distPolegar);
-                            distanciasBanco.push(mao.distancias.distIndicador);
-                            distanciasBanco.push(mao.distancias.distMedio);
-                            distanciasBanco.push(mao.distancias.distAnelar);
-                            distanciasBanco.push(mao.distancias.distMindinho);
-                            distanciasBanco.push(mao.distancias.distMindinhoAnelar);
-                            distanciasBanco.push(mao.distancias.distAnelarMedio);
-                            distanciasBanco.push(mao.distancias.distMedioIndicador);
-                            angulosBanco.push(mao.angulos.yaw);
-                            angulosBanco.push(mao.angulos.roll);
-                            angulosBanco.push(mao.angulos.pitch);
-                        });
 
-                        count = 0;
-                        if (distanciasBanco.length === distanciasCliente.length) {
+                        vetoresBanco = criaVetoresBanco(sinal);
+                        distanciasBanco = vetoresBanco.distancias;
+                        angulosBanco = vetoresBanco.angulos;
+
+                        if (distanciasBanco.length == distanciasCliente.length) {
                             var distancia = euclidian(distanciasCliente, distanciasBanco);
                             var angulo = euclidian(angulosCliente, angulosBanco);
 
@@ -80,10 +97,10 @@ module.exports = function(app) {
 
                             var elemento = {
                                 distancia: distanciaTotal,
-                                sinal: sinal
+                                sinal: sinal.nomeSinal
                             };
-                            vetorDistancias.push(elemento);
 
+                            vetorDistancias.push(elemento);
                         }
                         distanciasBanco = [];
                         angulosBanco = [];
@@ -97,7 +114,7 @@ module.exports = function(app) {
                     });
 
                     vetorDistancias.forEach(function(elemento) {
-                        console.log("Nome: " + elemento.sinal.nomeSinal + ": " + elemento.distancia);
+                        console.log("Nome: " + elemento.sinal + ": " + elemento.distancia);
                     });
                     console.log("Total de sinais: " + sinais.length);
                     res.json(vetorDistancias[0]);
