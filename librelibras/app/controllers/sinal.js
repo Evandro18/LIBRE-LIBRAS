@@ -66,57 +66,60 @@ module.exports = function(app) {
         return { distancias: distancias, angulos: angulos };
     }
 
+    var executaCalculos = function(nomeSinal, distanciasCliente, angulosCliente, distanciasBanco, angulosBanco) {
+        var distancia = euclidian(distanciasCliente, distanciasBanco);
+        var angulo = euclidian(angulosCliente, angulosBanco);
+
+        var distanciaTotal = ((distancia * 0.7) + (angulo * 0.3));
+
+        var elemento = {
+            distancia: distanciaTotal,
+            sinal: nomeSinal
+        };
+        return elemento;
+    }
+
+    var ordenaVetor = function(vetor) {
+        return vetor.sort(function(a, b) {
+            return a.distancia - b.distancia;
+        });
+    }
+
+    var log = function(vetor) {
+        vetor.forEach(function(elemento) {
+            console.log("Nome: " + elemento.sinal + ": " + elemento.distancia);
+        });
+        console.log("Total de sinais comparados: " + vetor.length);
+    }
+
     controller.comparaSinal = function(req, res) {
         var dados = req.body;
         Sinal.find().exec()
             .then(function(sinais) {
-                    //****************************************
-                    //TODO: Alterar metodo para comparar duas mãos
-                    console.log('comparando');
-                    var texto = '';
+
                     var vetorDistancias = new Array();
-                    var distanciasCliente = new Array();
-                    var angulosCliente = new Array();
-                    var angulosBanco = new Array();
-                    var distanciasBanco = new Array();
 
                     vetoresCliente = criaVetoresCliente(dados);
-                    distanciasCliente = vetoresCliente.distancias;
-                    angulosCliente = vetoresCliente.angulos;
+                    var distanciasCliente = vetoresCliente.distancias;
+                    var angulosCliente = vetoresCliente.angulos;
+
                     sinais.forEach(function(sinal) {
 
                         vetoresBanco = criaVetoresBanco(sinal);
-                        distanciasBanco = vetoresBanco.distancias;
-                        angulosBanco = vetoresBanco.angulos;
+                        var distanciasBanco = vetoresBanco.distancias;
+                        var angulosBanco = vetoresBanco.angulos;
 
                         if (distanciasBanco.length == distanciasCliente.length) {
-                            var distancia = euclidian(distanciasCliente, distanciasBanco);
-                            var angulo = euclidian(angulosCliente, angulosBanco);
-
-                            var distanciaTotal = ((distancia * 0.7) + (angulo * 0.3));
-
-                            var elemento = {
-                                distancia: distanciaTotal,
-                                sinal: sinal.nomeSinal
-                            };
-
-                            vetorDistancias.push(elemento);
+                            vetorDistancias.push(executaCalculos(sinal.nomeSinal, distanciasCliente, angulosCliente, distanciasBanco, angulosBanco));
                         }
-                        distanciasBanco = [];
-                        angulosBanco = [];
                     });
                     distanciasCliente = [];
                     angulosCliente = [];
 
-                    //ordenação
-                    vetorDistancias.sort(function(a, b) {
-                        return a.distancia - b.distancia;
-                    });
+                    ordenaVetor(vetorDistancias);
 
-                    vetorDistancias.forEach(function(elemento) {
-                        console.log("Nome: " + elemento.sinal + ": " + elemento.distancia);
-                    });
-                    console.log("Total de sinais: " + sinais.length);
+                    log(vetorDistancias);
+
                     res.json(vetorDistancias[0]);
                     //****************************************
                 },
