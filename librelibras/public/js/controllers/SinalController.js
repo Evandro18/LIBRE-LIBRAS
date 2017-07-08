@@ -39,15 +39,17 @@ angular.module('librelibras').controller('SinalController',
                     for (var i = 0; i < frame.hands.length; i++) {
                         if (frame.hands[i].type === 'left') {
                             maoEsquerdaTemp = frame.hands[i];
+                            console.log("esquerda");
+                            console.log(maoEsquerdaTemp.palmNormal);
                         } else {
                             maoDireitaTemp = frame.hands[i];
+                            console.log("Direita");
+                            console.log(maoDireitaTemp.palmNormal);
                         }
                     }
                 }
             }).use('playback', {
-                recording: 'recordings-pinch-57fps-57fps.json',
-                requiredProtocolVersion: 6,
-                pauseOnHand: true,
+                recording: 'demo2.json'
             })
             .use('riggedHand', {
                 scale: 1.5,
@@ -60,8 +62,7 @@ angular.module('librelibras').controller('SinalController',
                         }
                     }
                 }
-            });
-        window.controller = Leap.loopController;
+            }).connect();
 
         var camera = controller.plugins.riggedHand.camera;
         camera.position.set(-1, -10, -13);
@@ -83,7 +84,9 @@ angular.module('librelibras').controller('SinalController',
             var direita = maoDireitaTemp ? pegaDistancias(maoDireitaTemp) : undefined;
             var esquerda = maoEsquerdaTemp ? pegaDistancias(maoEsquerdaTemp) : undefined;
             $scope.maoDireita = direita;
+            console.log(direita);
             $scope.maoEsquerda = esquerda;
+            console.log(esquerda);
 
             $scope.sinal.maos = new Array();
             if (direita) {
@@ -97,8 +100,8 @@ angular.module('librelibras').controller('SinalController',
                 $scope.sinal.maos.push($scope.maoEsquerda);
             }
 
-            direita = undefined;
-            esquerda = undefined;
+            maoDireitaTemp = undefined;
+            maoEsquerdaTemp = undefined;
             console.log($scope.sinal);
         };
 
@@ -106,19 +109,19 @@ angular.module('librelibras').controller('SinalController',
             console.log('Calculando distâncias');
             var mao = {
                 distancias: {
-                    distPolegar: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[0].bones[3].nextJoint).toFixed(2),
-                    distIndicador: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[1].bones[3].nextJoint).toFixed(2),
-                    distMedio: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[2].bones[3].nextJoint).toFixed(2),
-                    distAnelar: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[3].bones[3].nextJoint).toFixed(2),
-                    distMindinho: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[4].bones[3].nextJoint).toFixed(2),
-                    distMindinhoAnelar: converteParaDistEuclidiana(objMao.fingers[4].bones[3].nextJoint, objMao.fingers[3].bones[3].nextJoint).toFixed(2),
-                    distAnelarMedio: converteParaDistEuclidiana(objMao.fingers[3].bones[3].nextJoint, objMao.fingers[2].bones[3].nextJoint).toFixed(2),
-                    distMedioIndicador: converteParaDistEuclidiana(objMao.fingers[2].bones[3].nextJoint, objMao.fingers[1].bones[3].nextJoint).toFixed(2)
+                    distPolegar: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[0].bones[3].nextJoint),
+                    distIndicador: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[1].bones[3].nextJoint),
+                    distMedio: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[2].bones[3].nextJoint),
+                    distAnelar: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[3].bones[3].nextJoint),
+                    distMindinho: converteParaDistEuclidiana(objMao.palmPosition, objMao.fingers[4].bones[3].nextJoint),
+                    distMindinhoAnelar: converteParaDistEuclidiana(objMao.fingers[4].bones[3].nextJoint, objMao.fingers[3].bones[3].nextJoint),
+                    distAnelarMedio: converteParaDistEuclidiana(objMao.fingers[3].bones[3].nextJoint, objMao.fingers[2].bones[3].nextJoint),
+                    distMedioIndicador: converteParaDistEuclidiana(objMao.fingers[2].bones[3].nextJoint, objMao.fingers[1].bones[3].nextJoint)
                 },
                 angulos: {
-                    yaw: objMao.yaw().toFixed(2),
-                    roll: objMao.roll().toFixed(2),
-                    pitch: objMao.pitch().toFixed(2)
+                    yaw: objMao.yaw(),
+                    roll: objMao.roll(),
+                    pitch: objMao.pitch()
                 }
             }
             return mao;
@@ -129,7 +132,7 @@ angular.module('librelibras').controller('SinalController',
             $scope.sinal.$compara()
                 .then(function(resposta) {
                     $scope.sinalRetornado = resposta.sinal;
-                    $scope.distanciaRetornada = resposta.distancia.toFixed();
+                    $scope.distanciaRetornada = resposta.distancia;
                 })
                 .catch(function(erro) {
                     console.log("Error");

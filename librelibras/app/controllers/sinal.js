@@ -68,27 +68,40 @@ module.exports = function(app) {
 
     var executaCalculos = function(nomeSinal, distanciasCliente, angulosCliente, distanciasBanco, angulosBanco) {
         var distancia = euclidian(distanciasCliente, distanciasBanco);
+        // var distancia = similarity(distanciasCliente, distanciasBanco);
         var angulo = euclidian(angulosCliente, angulosBanco);
+        // var angulo = similarity(angulosCliente, angulosBanco);
 
         var distanciaTotal = ((distancia * 0.7) + (angulo * 0.3));
 
         var elemento = {
             distancia: distanciaTotal,
-            sinal: nomeSinal
+            sinal: nomeSinal,
+            angulosB: angulosBanco,
+            angulosC: angulosCliente
         };
         return elemento;
     }
 
     var ordenaVetor = function(vetor) {
         return vetor.sort(function(a, b) {
+            //ordenação para Euclidian
             return a.distancia - b.distancia;
+            //ordenação para Cosseno
+            // return b.distancia - a.distancia;
         });
     }
 
     var log = function(vetor) {
-        vetor.forEach(function(elemento) {
-            console.log("Nome: " + elemento.sinal + ": " + elemento.distancia);
-        });
+        // vetor.forEach(function(elemento) {
+        //     console.log("Nome: " + elemento.sinal + ": " + elemento.distancia);
+        // });
+        console.log(vetor[0].sinal);
+        console.log(vetor[0].angulosB);
+        console.log(vetor[0].angulosC);
+        console.log(vetor[1].sinal);
+        console.log(vetor[1].angulosB);
+        console.log(vetor[1].angulosC);
         console.log("Total de sinais comparados: " + vetor.length);
     }
 
