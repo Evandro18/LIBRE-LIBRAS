@@ -68,15 +68,22 @@ angular.module('librelibras').controller('SinalController',
         camera.position.set(-1, -10, -13);
         camera.lookAt(new THREE.Vector3(0, 3, 0));
 
-        window.load = function() {
-            var canvas = document.getElementsByTagName("canvas");
-            canvas[0].style.width = '64%';
-            canvas[0].style.height = '45%';
-            canvas[0].style.marginTop = '100px';
-            canvas[0].style.marginLeft = '20px';
+        window.onload = function() {
+            var canvas = document.getElementsByTagName("canvas")[0];
+            canvas.style.width = '64%';
+            canvas.style.height = '45%';
+            canvas.style.marginTop = '100px';
+            canvas.style.marginLeft = '20px';
+            // canvas.remove();
+            // var visualizer = document.getElementById('visualizer');
+            // visualizer.appendChild(canvas);
+            // canvas.style.width = 'inherit';
+            // canvas.style.height = 'inherit';
+
+
         }
 
-        window.load();
+        window.onload();
 
         // Função que captura o sinal 
         $scope.capturar = function() {

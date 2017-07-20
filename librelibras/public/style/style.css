@@ -25,3 +25,7 @@ label {
 .card-text {
     font-color: blue;
 }
+
+img {
+    visibility: hidden;
+}
