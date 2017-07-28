@@ -15,6 +15,8 @@ import br.edu.ifms.aquidauana.pibic.model.Mao;
 
 public class ExemploListener extends Listener {
 
+	private Mao maoAuxiliar;
+
 	public void onConnect(Controller controller) {
 		System.out.println("Connected");
 	}
@@ -22,7 +24,8 @@ public class ExemploListener extends Listener {
 	public void onFrame(Controller controller) {
 		Frame frame = controller.frame();
 		HandList maos = frame.hands();
-		if (maos != null && !maos.isEmpty())
+		if (maos != null && !maos.isEmpty()) {
+
 			for (Hand mao : maos) {
 				Mao novaMao = new Mao();
 				novaMao.setEsquerda(mao.isLeft());
@@ -40,14 +43,10 @@ public class ExemploListener extends Listener {
 						for (Bone.Type tipoOsso : Bone.Type.values()) {
 							Bone osso = dedo.bone(tipoOsso);
 							Float distancia = osso.center().distanceTo(posicaoPalma);
+
 							if (osso.type() == Bone.Type.TYPE_DISTAL) {
 								novoDedo.setDistanciaDistal(distancia);
-							} else if (osso.type() == Bone.Type.TYPE_INTERMEDIATE) {
-								novoDedo.setDistanciaMedial(distancia);
-							} else if (osso.type() == Bone.Type.TYPE_METACARPAL) {
-								novoDedo.setDistanciaMetacarpal(distancia);
-							} else {
-								novoDedo.setDistanciaProximal(distancia);
+								novoDedo.setOssoDistal(osso);
 							}
 							
 							if (dedo.type() == Finger.Type.TYPE_INDEX) {
@@ -64,8 +63,28 @@ public class ExemploListener extends Listener {
 						}
 					}
 				}
-				System.out.println(novaMao.getIndicador().getDistanciaDistal() + "");
-				System.out.println();
+				novaMao.getMedio().setDistanciaLateralEsquerda(calculaDistanciaEuclidiana(novaMao.getIndicador().getOssoDistal().center(), novaMao.getMedio().getOssoDistal().center()));
+				novaMao.getAnelar().setDistanciaLateralEsquerda(calculaDistanciaEuclidiana(novaMao.getMedio().getOssoDistal().center(), novaMao.getAnelar().getOssoDistal().center()));
+				novaMao.getMinimo().setDistanciaLateralEsquerda(calculaDistanciaEuclidiana(novaMao.getAnelar().getOssoDistal().center(), novaMao.getMinimo().getOssoDistal().center()));
+//				System.out.println(novaMao);
+				maoAuxiliar = novaMao;
 			}
+		}
+	}
+
+	public Mao getMaoAux() {
+		return maoAuxiliar;
+	}
+
+	public double calculaDistanciaEuclidiana(Vector pontoInicial, Vector pontoFinal) {
+		return Math.sqrt(Math.pow(pontoInicial.getX() - pontoFinal.getX(), 2)
+				+ Math.pow(pontoInicial.getY() - pontoFinal.getY(), 2)
+				+ Math.pow(pontoInicial.getZ() - pontoFinal.getZ(), 2));
 	}
 }
+
+/*
+ * System.out.println("distancia LeapMotion: " + distancia +
+ * " distanciaEuclidiana: " + calculaDistanciaEuclidiana(osso.center(),
+ * posicaoPalma));
+ */

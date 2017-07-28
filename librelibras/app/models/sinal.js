@@ -2,39 +2,64 @@
 // Quando adicionamos um documento ao mesmo tempo em que esta-mos criando uma collection
 
 var mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
+
 module.exports = function() {
     var schema = mongoose.Schema({
         maos: [{
+            distancias: {
+                distPolegar: {
+                    type: Number
+                },
+                distIndicador: {
+                    type: Number
+                },
+                distMedio: {
+                    type: Number
+                },
+                distAnelar: {
+                    type: Number
+                },
+                distMindinho: {
+                    type: Number
+                },
+                distMindinhoAnelar: {
+                    type: Number
+                },
+                distAnelarMedio: {
+                    type: Number
+                },
+                distMedioIndicador: {
+                    type: Number
+                }
+            },
+
+            angulos: {
+                yaw: {
+                    type: Number
+                },
+                pitch: {
+                    type: Number
+                },
+                roll: {
+                    type: Number
+                }
+            },
+
             lado: {
                 type: String
-            },
-            distanciaPolegar: {
-                type: Number
-            },
-            distanciaIndicador: {
-                type: Number
-            },
-            distanciaMedio: {
-                type: Number
-            },
-            distanciaAnelar: {
-                type: Number
-            },
-            distanciaMindinho: {
-                type: Number
-            },
-            distanciaMindinhoAnelar: {
-                type: Number
-            },
-            distanciaAnelarMedio: {
-                type: Number
-            },
-            distanciaMedioIndicador: {
-                type: Number
             }
-        }]
+        }],
+
+        nomeSinal: {
+            type: String,
+            index: {
+                unique: true
+            }
+        }
+
     });
     // Retorna o sinal do banco de dados
-    return mongoose.model('Sinal', schema);
+    return mongoose.model('Sinal', schema, 'sinais');
 }

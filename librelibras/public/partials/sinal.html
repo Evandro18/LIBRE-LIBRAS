@@ -1,84 +1,138 @@
 <div class="container-fluid">
+    <nav class="nav-wrapper teal accent-4">
+        <a href="" class="brand-logo center" style="text-decoration:none">
+            <h5>LIBRE-LIBRAS</h5>
+        </a>
+    </nav>
     <div class="row">
-        <div class="card col s12 m8 l8 blue-gray darken-1">
-            <div class="card-title #00bfa5 teal accent-4 text-center"> Visualizador </div>
-            <br>
-            <div class="card-content">
+        <div class="card col s12 m7 l7 blue-gray darken-1 large card-large">
+            <div class="card-title #00bfa5 text-left text-center"> Visualizador </div>
+            <div id="visualizer" class="card-content visualizer">
                 <div class="card-action">
+                    <p>Cadastrar sinal</p>
                     <!-- botão que captura a mão, para então buscar a distância euclidiana -->
+                    <div class="input-field">
+                        <input ng-model="sinal.nomeSinal" class="form-control" placeholder="Digite o nome do sinal">
+                    </div>
                     <button ng-click="capturar()" class="btn waves-effect waves-ligh" type="button" name="button"> CAPTURAR </button>
                     <button ng-click="salvaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> SALVAR </button>
                     <button ng-click="comparaSinal()" class="btn waves-effect waves-ligh" type="button" name="button"> COMPARAR </button>
+                    <p id="resultado" ng-show="mensagem.sucesso == true" class="alert alert-success">{{mensagem.texto}}</p>
                 </div>
             </div>
         </div>
-        <div class="col s12 m2 l2">
-            <div class="card text-center">
-                <div class="card-title">
-                    Mão direita
+        <div class="col s12 m5 l5 ">
+            <div class="col s12 m6 l6 left-align">
+                <div class="card">
+                    <div class="card-title">
+                        Mão direita
+                    </div>
+                    <div class="card-content left-align">
+                        <p class="card-text">
+                            Distância polegar: {{ maoDireita.distancias.distPolegar }}
+                        </p>
+                        <p class="card-text">
+                            Distância indicador: {{ maoDireita.distancias.distIndicador }}
+                        </p>
+                        <p class="card-text">
+                            Distância medio: {{ maoDireita.distancias.distMedio }}
+                        </p>
+                        <p class="card-text">
+                            Distância anelar: {{ maoDireita.distancias.distAnelar }}
+                        </p>
+                        <p class="card-text">
+                            Distância mindinho: {{ maoDireita.distancias.distMindinho }}
+                        </p>
+                        <p class="card-text">
+                            Distância mindinho/anelar: {{ maoDireita.distancias.distMindinhoAnelar }}
+                        </p>
+                        <p class="card-text">
+                            Distância anelar/medio: {{ maoDireita.distancias.distAnelarMedio }}
+                        </p>
+                        <p class="card-text">
+                            Distância medio/indicador: {{ maoDireita.distancias.distMedioIndicador }}
+                        </p>
+                        <p class="card-text">
+                            Angulo ao redor do eixo X: {{ maoDireita.angulos.pitch }}
+                        </p>
+                        <p class="card-text">
+                            Angulo ao redor do eixo Y: {{ maoDireita.angulos.yaw }}
+                        </p>
+                        <p class="card-text">
+                            Angulo ao redor do eixo Z: {{ maoDireita.angulos.roll }}
+                        </p>
+                    </div>
                 </div>
-                <div class="card-content">
-                    <p class="card-text">
-                        Distância 1: {{ maos[0].distanciaPolegar }}
-                    </p>
-                    <p class="card-text">
-                        Distância 2: {{ maos[0].distanciaIndicador }}
-                    </p>
-                    <p class="card-text">
-                        Distância 3: {{ maos[0].distanciaMedio }}
-                    </p>
-                    <p class="card-text">
-                        Distância 4: {{ maos[0].distanciaAnelar }}
-                    </p>
-                    <p class="card-text">
-                        Distância 5: {{ maos[0].distanciaMindinho }}
-                    </p>
-                    <p class="card-text">
-                        Distância 6: {{ maos[0].distanciaMindinhoAnelar }}
-                    </p>
-                    <p class="card-text">
-                        Distância 7: {{ maos[0].distanciaAnelarMedio }}
-                    </p>
-                    <p class="card-text">
-                        Distância 8: {{ maos[0].distanciaMedioIndicador }}
-                    </p>
+            </div>
+            <div class="col s12 m6 l6">
+                <div class="card">
+                    <div class="card-title">
+                        Mão esquerda
+                    </div>
+                    <div class="card-content left-align">
+                        <p class="card-text">
+                            Distância polegar: {{ maoEsquerda.distancias.distPolegar }}
+                        </p>
+                        <p class="card-text">
+                            Distância indicador: {{ maoEsquerda.distancias.distIndicador }}
+                        </p>
+                        <p class="card-text">
+                            Distância medio: {{ maoEsquerda.distancias.distMedio }}
+                        </p>
+                        <p class="card-text">
+                            Distância anelar: {{ maoEsquerda.distancias.distAnelar }}
+                        </p>
+                        <p class="card-text">
+                            Distância mindinho: {{ maoEsquerda.distancias.distMindinho }}
+                        </p>
+                        <p class="card-text">
+                            Distância mindinho/anelar: {{ maoEsquerda.distancias.distMindinhoAnelar }}
+                        </p>
+                        <p class="card-text">
+                            Distância anelar/medio: {{ maoEsquerda.distancias.distAnelarMedio }}
+                        </p>
+                        <p class="card-text">
+                            Distância medio/indicador: {{ maoEsquerda.distancias.distMedioIndicador }}
+                        </p>
+                        <p class="card-text">
+                            Angulo ao redor do eixo X: {{ maoEsquerda.angulos.pitch }}
+                        </p>
+                        <p class="card-text">
+                            Angulo ao redor do eixo Y: {{ maoEsquerda.angulos.yaw }}
+                        </p>
+                        <p class="card-text">
+                            Angulo ao redor do eixo Z: {{ maoEsquerda.angulos.roll }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card flow-text col s12 m12 l12">
+                    <div class="card-title">Sinal encontrado</div>
+                    <div class="card-content">
+                        <p class="card-text">Nome sinal: {{sinalRetornado}} </p>
+                        <p class="card-text">Distância euclidiana: {{distanciaRetornada}} </p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col s12 m2 l2">
-            <div class="card text-center">
-                <div class="card-title">
-                    Mão esquerda
-                </div>
-                <div class="card-content">
-                    <p class="card-text">
-                    </p>
-                    <p class="card-text">
-                        Distância 1: {{ maos[1].distanciaPolegar }}
-                    </p>
-                    <p class="card-text">
-                        Distância 2: {{ maos[1].distanciaIndicador }}
-                    </p>
-                    <p class="card-text">
-                        Distância 3: {{ maos[1].distanciaMedio }}
-                    </p>
-                    <p class="card-text">
-                        Distância 4: {{ maos[1].distanciaAnelar }}
-                    </p>
-                    <p class="card-text">
-                        Distância 5: {{ maos[1].distanciaMindinho }}
-                    </p>
-                    <p class="card-text">
-                        Distância 6: {{ maos[1].distanciaMindinhoAnelar }}
-                    </p>
-                    <p class="card-text">
-                        Distância 7: {{ maos[1].distanciaAnelarMedio }}
-                    </p>
-                    <p class="card-text">
-                        Distância 8: {{ maos[1].distanciaMedioIndicador }}
-                    </p>
-                </div>
-            </div>
-        </div>
+    </div>
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="sinal in sinais">
+                <tr>
+                    <td ng-click="buscaSinal(sinal._id)">{{sinal._id}}</td>
+                    <td>{{sinal.nomeSinal}}</td>
+                    <td><button ng-click="remove(sinal._id)">remover</button></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
