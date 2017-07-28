@@ -45,6 +45,10 @@ module.exports = function() {
                 roll: {
                     type: Number
                 }
+            },
+
+            lado: {
+                type: String
             }
         }],
 

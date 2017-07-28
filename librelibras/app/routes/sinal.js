@@ -7,4 +7,7 @@ module.exports = function(app) {
         .post(controller.salvaSinal)
         .get(controller.listaSinais)
         .put(controller.comparaSinal);
+    app.route('/sinal/:id')
+        .get(controller.buscaPorId)
+        .delete(controller.remove);
 }

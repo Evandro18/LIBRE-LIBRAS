@@ -1,23 +1,44 @@
-// Controller faz ligação entre a página (view) e os dados (model)
-// Exports é uma função que ao ser chamada retornará uma instância do Express
-var similarity = require('compute-cosine-similarity');
-var euclidian = require('euclidean-distance')
-
+const similarity = require('compute-cosine-similarity');
+const euclidian = require('euclidean-distance')
+const co = require('co')
 module.exports = function(app) {
     var Sinal = app.models.sinal;
     var controller = {};
 
     controller.salvaSinal = function(req, res) {
-        console.log(req.body);
-        Sinal.create(req.body)
-            .then(
-                function(sinal) {
-                    res.json(sinal);
-                },
-                function(erro) {
-                    console.log(erro);
-                    res.status(500).json(erro);
-                });
+        var id = req.body._id;
+        if (!id) {
+            Sinal.create(req.body)
+                .then(
+                    function(sinal) {
+                        res.json(sinal);
+                    },
+                    function(erro) {
+                        console.log(erro);
+                        res.status(500).json(erro);
+                    });
+        } else {
+            Sinal.findByIdAndUpdate(id, req.body)
+                .then(
+                    function(sinal) {
+                        console.log('Atualizado com sucesso')
+                    },
+                    function(erro) {
+                        console.log(erro);
+                        res.status(500).json(erro);
+                    });
+        }
+    }
+
+    controller.buscaPorId = function(req, res) {
+        var id = req.params.id;
+        Sinal.findById(id).exec()
+            .then(function(sinal) {
+                res.json(sinal);
+            }, function(erro) {
+                console.log(erro);
+                res.status(500).json(erro);
+            });
     }
 
     controller.listaSinais = function(req, res) {
@@ -26,9 +47,20 @@ module.exports = function(app) {
                     res.json(sinais);
                 },
                 function(erro) {
-                    res.status(git500).json(erro);
-                    console.log('Erro');
+                    console.log(erro);
+                    res.status(500).json(erro);
                 });
+    }
+
+    controller.remove = function(req, res) {
+        Sinal.remove({ _id: req.params.id }).exec()
+            .then(function() {
+                    res.status(200).json({ mensagem: 'Removido com sucesso' });
+                },
+                function(erro) {
+                    console.log(erro);
+                    res.status(500).json(erro);
+                })
     }
 
     var criaVetoresCliente = function(sinalCliente) {
@@ -46,25 +78,42 @@ module.exports = function(app) {
 
         return { distancias: distancias, angulos: angulos };;
     }
+    var criaVetoresBanco = function(sinalBanco, lado) {
 
-    var criaVetoresBanco = function(sinalBanco) {
         distancias = [];
         angulos = [];
+
+        var filtraLadoMao = function() {
+            return sinalBanco.maos.filter((mao) => {
+                return mao.lado === lado
+            })
+        }
+
+        var pegaDistancias = function(mao) {
+            if (mao) {
+                distancias.push(mao.distancias.distPolegar);
+                distancias.push(mao.distancias.distIndicador);
+                distancias.push(mao.distancias.distMedio);
+                distancias.push(mao.distancias.distAnelar);
+                distancias.push(mao.distancias.distMindinho);
+                distancias.push(mao.distancias.distMindinhoAnelar);
+                distancias.push(mao.distancias.distAnelarMedio);
+                distancias.push(mao.distancias.distMedioIndicador);
+                angulos.push(mao.angulos.yaw);
+                angulos.push(mao.angulos.roll);
+                angulos.push(mao.angulos.pitch);
+            } else {
+                console.log('Mão não encontrada')
+            }
+        }
+
         sinalBanco.maos.forEach(function(mao) {
-            distancias.push(mao.distancias.distPolegar);
-            distancias.push(mao.distancias.distIndicador);
-            distancias.push(mao.distancias.distMedio);
-            distancias.push(mao.distancias.distAnelar);
-            distancias.push(mao.distancias.distMindinho);
-            distancias.push(mao.distancias.distMindinhoAnelar);
-            distancias.push(mao.distancias.distAnelarMedio);
-            distancias.push(mao.distancias.distMedioIndicador);
-            angulos.push(mao.angulos.yaw);
-            angulos.push(mao.angulos.roll);
-            angulos.push(mao.angulos.pitch);
+            pegaDistancias(mao)
         });
+
         return { distancias: distancias, angulos: angulos };
     }
+
 
     var executaCalculos = function(nomeSinal, distanciasCliente, angulosCliente, distanciasBanco, angulosBanco) {
         var distancia = euclidian(distanciasCliente, distanciasBanco);
@@ -99,33 +148,67 @@ module.exports = function(app) {
         console.log(vetor[0].sinal);
         console.log(vetor[0].angulosB);
         console.log(vetor[0].angulosC);
-        console.log(vetor[1].sinal);
-        console.log(vetor[1].angulosB);
-        console.log(vetor[1].angulosC);
         console.log("Total de sinais comparados: " + vetor.length);
     }
 
+    buscaMaoPadrao = function() {
+        return Sinal.findOne({ nomeSinal: 'Mão padão' }).exec();
+    }
+
+    var regra = function(item1, item2) {
+        return ((item2 * 100) / item1);
+    }
+
+    var normaliza = function(vetor) {
+        buscaMaoPadrao().then(
+            function(mao) {
+                criaVetoresBanco(mao);
+            }).error(function(error) {
+            console.log(error)
+        })
+
+        var normal = [0.79, 0.79];
+        var novo = [];
+        for (i = 0; i < vetor.length; i++) {
+            novo.push(regra(normal[i], vetor[i]));
+        }
+        return novo;
+    }
+
     controller.comparaSinal = function(req, res) {
-        var dados = req.body;
+        var sinalCliente = req.body;
+        console.log(sinalCliente)
+        const lado = sinalCliente.maos.length < 2 ? sinalCliente.maos[0].lado : undefined;
+
         Sinal.find().exec()
             .then(function(sinais) {
 
                     var vetorDistancias = new Array();
 
-                    vetoresCliente = criaVetoresCliente(dados);
+                    vetoresCliente = criaVetoresCliente(sinalCliente);
                     var distanciasCliente = vetoresCliente.distancias;
                     var angulosCliente = vetoresCliente.angulos;
 
-                    sinais.forEach(function(sinal) {
 
-                        vetoresBanco = criaVetoresBanco(sinal);
+                    var criaVetorDistancias = function(sinal) {
+                        var vetoresBanco = criaVetoresBanco(sinal, lado)
                         var distanciasBanco = vetoresBanco.distancias;
                         var angulosBanco = vetoresBanco.angulos;
-
                         if (distanciasBanco.length == distanciasCliente.length) {
                             vetorDistancias.push(executaCalculos(sinal.nomeSinal, distanciasCliente, angulosCliente, distanciasBanco, angulosBanco));
                         }
+                    }
+
+                    sinais.forEach(function(sinal) {
+                        if (lado && sinal.maos.length === 1) {
+                            if (sinal.maos[0].lado === lado) {
+                                criaVetorDistancias(sinal)
+                            }
+                        } else {
+                            criaVetorDistancias(sinal)
+                        }
                     });
+
                     distanciasCliente = [];
                     angulosCliente = [];
 
@@ -142,4 +225,4 @@ module.exports = function(app) {
                 });
     }
     return controller;
-};
+}

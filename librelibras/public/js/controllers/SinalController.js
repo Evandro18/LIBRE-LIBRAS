@@ -1,6 +1,7 @@
 angular.module('librelibras').controller('SinalController',
     function($scope, $routeParams, Sinal) {
         // ^ Sinal - devolve um objeto que permite realizar uma série de operações seguindo o padrão REST
+        $scope.sinal = new Sinal();
 
         maoDireitaTemp = null;
 
@@ -8,7 +9,7 @@ angular.module('librelibras').controller('SinalController',
 
         $scope.maos = [];
 
-        $scope.sinal = {};
+        // $scope.sinal = {};
 
         $scope.sinal.nomeSinal = "";
 
@@ -18,18 +19,42 @@ angular.module('librelibras').controller('SinalController',
 
         $scope.texto = '';
 
-        if ($routeParams.sinalId) {
-            Sinal.get({ id: $routeParams.sinalId },
-                function(sinal) {
-                    $scope.sinal = sinal;
+        var direita = undefined;
+        var esquerda = undefined;
+
+        var buscaSinais = function() {
+            Sinal.query(null,
+                function(sinais) {
+                    $scope.sinais = sinais;
                 },
                 function(erro) {
+                    alert('error');
                     $scope.mensagem = { texto: 'Erro' };
                 }
             );
-        } else {
-            $scope.sinal = new Sinal();
         }
+
+        buscaSinais();
+
+        $scope.buscaSinal = function(id) {
+            Sinal.get({ id: id },
+                function(sinal) {
+                    $scope.sinal = sinal;
+                    console.log(sinal);
+                    $scope.maoEsquerda = sinal.maos.filter((mao) => {
+                        return mao.lado === 'left'
+                    })[0];
+                    $scope.maoDireita = sinal.maos.filter((mao) => {
+                        return mao.lado === 'right'
+                    })[0];
+
+                    direita = $scope.maoDireita;
+                    esquerda = $scope.maoEsquerda;
+                },
+                function(erro) {
+                    console.log(erro);
+                });
+        };
 
         var controllerOptions = { enableGestures: true };
 
@@ -39,12 +64,8 @@ angular.module('librelibras').controller('SinalController',
                     for (var i = 0; i < frame.hands.length; i++) {
                         if (frame.hands[i].type === 'left') {
                             maoEsquerdaTemp = frame.hands[i];
-                            console.log("esquerda");
-                            console.log(maoEsquerdaTemp.palmNormal);
                         } else {
                             maoDireitaTemp = frame.hands[i];
-                            console.log("Direita");
-                            console.log(maoDireitaTemp.palmNormal);
                         }
                     }
                 }
@@ -65,7 +86,9 @@ angular.module('librelibras').controller('SinalController',
             }).connect();
 
         var camera = controller.plugins.riggedHand.camera;
-        camera.position.set(-1, -10, -13);
+        // camera.position.set(-1, -10, -13);
+        camera.position.set(0, -20, -5);
+        // camera.lookAt(new THREE.Vector3(0, 3, 0));
         camera.lookAt(new THREE.Vector3(0, 3, 0));
 
         window.onload = function() {
@@ -79,37 +102,32 @@ angular.module('librelibras').controller('SinalController',
             // visualizer.appendChild(canvas);
             // canvas.style.width = 'inherit';
             // canvas.style.height = 'inherit';
-
-
         }
 
         window.onload();
 
         // Função que captura o sinal 
         $scope.capturar = function() {
+
+            //TODO: confirmar método de atualização
             console.log('capturarando');
-            var direita = maoDireitaTemp ? pegaDistancias(maoDireitaTemp) : undefined;
-            var esquerda = maoEsquerdaTemp ? pegaDistancias(maoEsquerdaTemp) : undefined;
-            $scope.maoDireita = direita;
-            console.log(direita);
-            $scope.maoEsquerda = esquerda;
-            console.log(esquerda);
+            $scope.maoDireita = maoDireitaTemp ? pegaDistancias(maoDireitaTemp) : direita ? direita : undefined;
+            $scope.maoEsquerda = maoEsquerdaTemp ? pegaDistancias(maoEsquerdaTemp) : esquerda ? esquerda : undefined;
 
             $scope.sinal.maos = new Array();
-            if (direita) {
+            if ($scope.maoDireita) {
                 console.log('Mão Direita');
-
                 $scope.sinal.maos.push($scope.maoDireita);
             }
 
-            if (esquerda) {
+            if ($scope.maoEsquerda) {
                 console.log('Mão Esquerda');
                 $scope.sinal.maos.push($scope.maoEsquerda);
             }
 
+            console.log($scope.sinal);
             maoDireitaTemp = undefined;
             maoEsquerdaTemp = undefined;
-            console.log($scope.sinal);
         };
 
         function pegaDistancias(objMao) {
@@ -129,7 +147,8 @@ angular.module('librelibras').controller('SinalController',
                     yaw: objMao.yaw(),
                     roll: objMao.roll(),
                     pitch: objMao.pitch()
-                }
+                },
+                lado: objMao.type
             }
             return mao;
         }
@@ -149,6 +168,7 @@ angular.module('librelibras').controller('SinalController',
         // Função que salva o sinal
         $scope.salvaSinal = function() {
             console.log('Salvando');
+            console.log($scope.sinal);
             $scope.sinal.$save()
                 .then(function() {
                     $scope.mensagem = { texto: 'Salvo com sucesso!' };
@@ -158,12 +178,23 @@ angular.module('librelibras').controller('SinalController',
                         texto: 'Salvo com sucesso',
                         sucesso: true
                     }
+                    buscaSinais();
                 })
                 .catch(function(erro) {
                     $scope.mensagem = { texto: 'Erro ao salvar!' };
                     console.log('salvaSinal' + erro);
                 });
         };
+
+        $scope.remove = function(id) {
+            Sinal.remove({ id: id },
+                function(resposta) {
+                    alert(resposta.mensagem);
+                },
+                function(erro) {
+                    alert(erro);
+                });
+        }
     });
 
 // converte em String e limita o número de casas decimas a dois "direction: vectorToString(maoEsquerda.direction, 2)"

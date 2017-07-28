@@ -117,4 +117,22 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="sinal in sinais">
+                <tr>
+                    <td ng-click="buscaSinal(sinal._id)">{{sinal._id}}</td>
+                    <td>{{sinal.nomeSinal}}</td>
+                    <td><button ng-click="remove(sinal._id)">remover</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
