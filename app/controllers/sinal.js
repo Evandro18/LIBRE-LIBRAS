@@ -83,9 +83,7 @@ module.exports = function(app) {
         angulos = [];
 
         var filtraLadoMao = function() {
-            return sinalBanco.maos.filter((mao) => {
-                return mao.lado === lado
-            })
+            return sinalBanco.maos.filter(mao => mao.lado === lado)
         }
 
         var pegaDistancias = function(mao) {
@@ -106,9 +104,13 @@ module.exports = function(app) {
             }
         }
 
-        sinalBanco.maos.forEach(function(mao) {
-            pegaDistancias(mao)
-        });
+        if (lado) {
+            pegaDistancias(filtraLadoMao()[0])
+        } else {
+            sinalBanco.maos.forEach(function(mao) {
+                pegaDistancias(mao)
+            });
+        }
 
         return { distancias: distancias, angulos: angulos };
     }
@@ -180,16 +182,11 @@ module.exports = function(app) {
                     var vetorDistancias = new Array();
 
                     vetoresCliente = criaVetoresCliente(sinalCliente);
-                    var distanciasCliente = vetoresCliente.distancias;
-                    var angulosCliente = vetoresCliente.angulos;
-
 
                     var criaVetorDistancias = function(sinal) {
                         var vetoresBanco = criaVetoresBanco(sinal, lado)
-                        var distanciasBanco = vetoresBanco.distancias;
-                        var angulosBanco = vetoresBanco.angulos;
-                        if (distanciasBanco.length == distanciasCliente.length) {
-                            vetorDistancias.push(executaCalculos(sinal.nomeSinal, distanciasCliente, angulosCliente, distanciasBanco, angulosBanco));
+                        if (vetoresBanco.distancias.length === vetoresCliente.distancias.length) {
+                            vetorDistancias.push(executaCalculos(sinal.nomeSinal, vetoresCliente.distancias, vetoresCliente.angulos, vetoresBanco.distancias, vetoresBanco.angulos));
                         }
                     }
 
