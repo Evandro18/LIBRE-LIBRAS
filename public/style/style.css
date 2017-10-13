@@ -4,6 +4,7 @@
 
 canvas {
     pointer-events: none;
+    position: fixed;
 }
 
 p {

@@ -93,15 +93,13 @@ angular.module('librelibras').controller('SinalController',
 
         window.onload = function() {
             var canvas = document.getElementsByTagName("canvas")[0];
-            canvas.style.width = '64%';
-            canvas.style.height = '45%';
-            canvas.style.marginTop = '100px';
+            canvas.style.width = '97%';
+            canvas.style.height = '60%';
+            canvas.style.marginTop = '30px';
             canvas.style.marginLeft = '20px';
-            // canvas.remove();
-            // var visualizer = document.getElementById('visualizer');
-            // visualizer.appendChild(canvas);
-            // canvas.style.width = 'inherit';
-            // canvas.style.height = 'inherit';
+            var visualizer = document.getElementById('visualizer');
+            visualizer.appendChild(canvas)
+            canvas.style.position = 'absolute';
         }
 
         window.onload();

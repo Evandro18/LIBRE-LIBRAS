@@ -22,5 +22,6 @@
     "start": "nodemon server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": "https://github.com/Evandro18/LIBRE-LIBRAS.git"
 }
