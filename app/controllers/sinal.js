@@ -1,6 +1,5 @@
 const similarity = require('compute-cosine-similarity');
 const euclidian = require('euclidean-distance')
-const co = require('co')
 module.exports = function(app) {
     var Sinal = app.models.sinal;
     var controller = {};
